@@ -84,7 +84,7 @@ struct ConversionSettingsView: View {
             VStack(spacing: 4) {
                 Image(systemName: strategyIcon)
                     .font(.title2)
-                    .foregroundStyle(LinearGradient.accentGradient)
+                    .foregroundColor(.accent1)
                 Text(strategy.audioMode.rawValue)
                     .font(.caption2)
                     .fontWeight(.medium)
@@ -118,8 +118,8 @@ struct ConversionSettingsView: View {
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 6) {
                     Image(systemName: "sparkles")
-                        .foregroundStyle(LinearGradient.accentGradient)
                         .font(.subheadline)
+                        .foregroundColor(.accent1)
                     Text("Force Spatial Upmix")
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -231,7 +231,7 @@ struct ConversionSettingsView: View {
         if let lang = stream.language { parts.append(lang.uppercased()) }
         parts.append(stream.codecName.uppercased())
         if let ch = stream.channels { parts.append(channelName(ch)) }
-        if let title = stream.title { parts.append(""\(title)"") }
+        if let title = stream.title { parts.append("\"\(title)\"") }
         if stream.isDefault { parts.append("•") }
         return parts.joined(separator: " ")
     }

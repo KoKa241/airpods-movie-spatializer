@@ -47,14 +47,12 @@ struct ConversionProgressView: View {
                     VStack(spacing: 2) {
                         if ffmpeg.isConverting {
                             Text(String(format: "%.0f%%", ffmpeg.progress * 100))
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundStyle(LinearGradient.accentGradient)
+                                .font(.system(size: 22, weight: .bold))
+                                .foregroundColor(.accent1)
                         } else if ffmpeg.progress >= 1 {
                             Image(systemName: "checkmark")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundStyle(LinearGradient.accentGradient)
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.accent1)
                         } else {
                             Image(systemName: "xmark")
                                 .font(.title2)
@@ -148,7 +146,7 @@ struct ConversionProgressView: View {
                     .background(Color.black.opacity(0.3))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .frame(height: 150)
-                    .onChange(of: ffmpeg.logLines.count) { _, _ in
+                    .onChange(of: ffmpeg.logLines.count) { _ in
                         withAnimation { proxy.scrollTo("bottom") }
                     }
                 }

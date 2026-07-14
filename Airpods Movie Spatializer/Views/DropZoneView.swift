@@ -55,7 +55,7 @@ struct DropZoneView: View {
 
                     Image(systemName: isDragging ? "film.stack.fill" : "film.stack")
                         .font(.system(size: 36, weight: .medium))
-                        .foregroundStyle(isDragging ? LinearGradient.accentGradient : LinearGradient(colors: [.textSecondary], startPoint: .top, endPoint: .bottom))
+                        .foregroundColor(isDragging ? .accent1 : .textSecondary)
                         .scaleEffect(isDragging ? 1.1 : 1.0)
                         .animation(.spring(response: 0.3), value: isDragging)
                 }
@@ -98,7 +98,7 @@ struct DropZoneView: View {
         .onDrop(of: [.fileURL], isTargeted: $isDragging) { providers in
             handleDrop(providers: providers)
         }
-        .onChange(of: isDragging) { _, newValue in
+        .onChange(of: isDragging) { newValue in
             if newValue {
                 withAnimation(.easeInOut(duration: 0.5).repeatForever(autoreverses: true)) {
                     pulseScale = 1.05

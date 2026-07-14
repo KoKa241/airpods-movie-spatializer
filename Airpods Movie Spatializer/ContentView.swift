@@ -14,8 +14,8 @@ enum AppScreen {
 // MARK: - Content View
 
 struct ContentView: View {
-    @State private var settings = AppSettings.shared
-    @State private var ffmpeg = FFmpegManager.shared
+    @ObservedObject private var settings = AppSettings.shared
+    @ObservedObject private var ffmpeg  = FFmpegManager.shared
 
     // UI State
     @State private var screen: AppScreen = .dropZone
@@ -349,7 +349,7 @@ struct FeatureChip: View {
         HStack(spacing: 5) {
             Image(systemName: icon)
                 .font(.caption)
-                .foregroundStyle(LinearGradient.accentGradient)
+                .foregroundColor(.accent1)
             Text(label)
                 .font(.caption)
                 .foregroundColor(.textSecondary)

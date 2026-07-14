@@ -13,8 +13,6 @@ struct Airpods_Movie_SpatializerApp: App {
         WindowGroup {
             ContentView()
         }
-        .windowResizability(.contentMinSize)
-        .defaultSize(width: 760, height: 680)
         .commands {
             CommandGroup(replacing: .newItem) { }
         }

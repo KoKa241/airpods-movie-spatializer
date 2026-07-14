@@ -2,23 +2,25 @@ import Foundation
 import AppKit
 
 // MARK: - FFmpeg Manager
+// Uses ObservableObject (macOS 12 compatible) instead of @Observable (macOS 14+)
 
-@Observable
 @MainActor
-class FFmpegManager {
+final class FFmpegManager: ObservableObject {
     static let shared = FFmpegManager()
 
     // MARK: - State
 
-    var isProbing = false
-    var isConverting = false
-    var progress: Double = 0        // 0.0 – 1.0
-    var logLines: [String] = []
-    var currentPhase: String = ""
-    var errorMessage: String?
+    @Published var isProbing    = false
+    @Published var isConverting = false
+    @Published var progress: Double = 0     // 0.0 – 1.0
+    @Published var logLines: [String] = []
+    @Published var currentPhase: String = ""
+    @Published var errorMessage: String?
 
     private var conversionProcess: Process?
     private var duration: Double = 0
+
+    private init() {}
 
     // MARK: - Probe
 
@@ -78,8 +80,8 @@ class FFmpegManager {
             ? mediaInfo.audioStreams[job.selectedAudioStreamIndex].id
             : 0
 
-        args += ["-map", "0:v:0"]               // first video stream
-        args += ["-map", "0:\(audioStreamIndex)"] // selected audio stream
+        args += ["-map", "0:v:0"]                 // first video stream
+        args += ["-map", "0:\(audioStreamIndex)"]  // selected audio stream
 
         // Audio codec
         let effectiveMode = job.forceSpatialUpmix ? AudioConversionMode.spatialUpmix : mode
@@ -136,10 +138,10 @@ class FFmpegManager {
         guard !isConverting else { return }
 
         isConverting = true
-        progress = 0
-        logLines = []
+        progress     = 0
+        logLines     = []
         errorMessage = nil
-        duration = mediaInfo.duration
+        duration     = mediaInfo.duration
         currentPhase = "Preparing..."
 
         defer { isConverting = false }
@@ -149,10 +151,10 @@ class FFmpegManager {
             throw FFmpegError.ffmpegNotConfigured
         }
 
-        let args = buildArguments(for: job, mediaInfo: mediaInfo, mode: mode)
+        let args    = buildArguments(for: job, mediaInfo: mediaInfo, mode: mode)
         let execURL = URL(fileURLWithPath: settings.ffmpegPath)
 
-        // Check if output already exists — remove it (we pass -y but just in case)
+        // Remove stale output if it exists (-y handles it but just in case)
         if FileManager.default.fileExists(atPath: job.outputURL.path) {
             try? FileManager.default.removeItem(at: job.outputURL)
         }
@@ -169,8 +171,8 @@ class FFmpegManager {
     func cancel() {
         conversionProcess?.terminate()
         conversionProcess = nil
-        isConverting = false
-        currentPhase = "Cancelled"
+        isConverting  = false
+        currentPhase  = "Cancelled"
         addLog("⚠ Conversion cancelled by user.")
     }
 
@@ -188,17 +190,17 @@ class FFmpegManager {
             do {
                 let process = Process()
                 process.executableURL = executableURL
-                process.arguments = arguments
+                process.arguments     = arguments
 
                 let outPipe = Pipe()
                 let errPipe = Pipe()
                 process.standardOutput = outPipe
-                process.standardError = errPipe
+                process.standardError  = errPipe
 
                 process.terminationHandler = { p in
-                    let outData = outPipe.fileHandleForReading.readDataToEndOfFile()
-                    let errData = errPipe.fileHandleForReading.readDataToEndOfFile()
-                    let output = String(data: outData, encoding: .utf8) ?? ""
+                    let outData   = outPipe.fileHandleForReading.readDataToEndOfFile()
+                    let errData   = errPipe.fileHandleForReading.readDataToEndOfFile()
+                    let output    = String(data: outData, encoding: .utf8) ?? ""
                     let errOutput = String(data: errData, encoding: .utf8) ?? ""
 
                     if p.terminationStatus == 0 {
@@ -220,11 +222,11 @@ class FFmpegManager {
             do {
                 let process = Process()
                 process.executableURL = executableURL
-                process.arguments = arguments
+                process.arguments     = arguments
 
                 let errPipe = Pipe()
                 process.standardOutput = errPipe
-                process.standardError = errPipe
+                process.standardError  = errPipe
 
                 self.conversionProcess = process
 
@@ -251,7 +253,7 @@ class FFmpegManager {
                         guard let self else { return }
                         self.conversionProcess = nil
                         if p.terminationStatus == 0 {
-                            self.progress = 1.0
+                            self.progress     = 1.0
                             self.currentPhase = "Done!"
                             self.addLog("✓ Conversion completed successfully.")
                             continuation.resume()
@@ -274,13 +276,12 @@ class FFmpegManager {
     }
 
     private func parseProgressLine(_ line: String) {
-        // Skip lines that are not progress lines
         if line.hasPrefix("frame=") || line.contains("time=") {
             addLog(line)
 
-            // Parse time= to compute progress
+            // Parse time= to compute progress percentage
             if let timeRange = line.range(of: "time=") {
-                let timeStart = line.index(timeRange.upperBound, offsetBy: 0)
+                let timeStart  = line.index(timeRange.upperBound, offsetBy: 0)
                 let timeSubstr = String(line[timeStart...])
                 if let spaceRange = timeSubstr.firstIndex(of: " ") {
                     let timeStr = String(timeSubstr[..<spaceRange])

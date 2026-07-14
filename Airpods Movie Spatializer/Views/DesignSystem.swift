@@ -65,7 +65,7 @@ struct GradientButton: View {
         Button(action: action) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
-                    .fontWeight(.semibold)
+                    .font(.system(size: 15, weight: .semibold))
                 Text(title)
                     .fontWeight(.semibold)
             }
@@ -146,7 +146,7 @@ struct AudioCompatibilityBadge: View {
     var body: some View {
         HStack(spacing: 5) {
             Image(systemName: compatibility.systemImage)
-                .font(.caption)
+                .font(.system(size: 11))
             Text(compatibility.displayName)
                 .font(.caption)
                 .fontWeight(.medium)
@@ -191,8 +191,8 @@ struct SectionHeader: View {
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: icon)
-                .foregroundStyle(LinearGradient.accentGradient)
-                .fontWeight(.semibold)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(.accent1)
             Text(title)
                 .font(.headline)
                 .fontWeight(.semibold)

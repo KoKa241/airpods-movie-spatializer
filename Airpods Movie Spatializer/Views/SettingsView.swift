@@ -3,11 +3,12 @@ import SwiftUI
 // MARK: - Settings View
 
 struct SettingsView: View {
-    @State private var settings = AppSettings.shared
+    @ObservedObject private var settings = AppSettings.shared
     @State private var ffmpegVersion: String? = nil
     @State private var isVerifying = false
     @State private var verifyError: String? = nil
     @State private var showSuccess = false
+    @State private var quarantineMsg: String? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -49,7 +50,32 @@ struct SettingsView: View {
                     .buttonStyle(.bordered)
                 }
 
-                Text("Usually: /usr/local/bin/ffmpeg or /opt/homebrew/bin/ffmpeg")
+                HStack(spacing: 12) {
+                    Button("Auto-detect") {
+                        settings.autoDetectFFmpeg()
+                    }
+                    .font(.caption)
+                    .foregroundColor(.accent2)
+
+                    Button("Remove Quarantine") {
+                        if settings.removeQuarantine(from: settings.ffmpegPath) {
+                            quarantineMsg = "Quarantine removed from ffmpeg ✓"
+                        } else {
+                            quarantineMsg = "Nothing to remove or failed"
+                        }
+                    }
+                    .font(.caption)
+                    .foregroundColor(.orange)
+                    .disabled(settings.ffmpegPath.isEmpty)
+                }
+
+                if let msg = quarantineMsg {
+                    Text(msg)
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                }
+
+                Text("Homebrew: /opt/homebrew/bin/ffmpeg  ·  Intel Mac: /usr/local/bin/ffmpeg")
                     .font(.caption)
                     .foregroundColor(.textSecondary)
             }
@@ -70,11 +96,24 @@ struct SettingsView: View {
                     .buttonStyle(.bordered)
                 }
 
-                Button("Auto-detect from FFmpeg location") {
-                    settings.autoDetectFFprobe()
+                HStack(spacing: 12) {
+                    Button("Auto-detect from FFmpeg location") {
+                        settings.autoDetectFFprobe()
+                    }
+                    .font(.caption)
+                    .foregroundColor(.accent2)
+
+                    Button("Remove Quarantine") {
+                        if settings.removeQuarantine(from: settings.ffprobePath) {
+                            quarantineMsg = "Quarantine removed from ffprobe ✓"
+                        } else {
+                            quarantineMsg = "Nothing to remove or failed"
+                        }
+                    }
+                    .font(.caption)
+                    .foregroundColor(.orange)
+                    .disabled(settings.ffprobePath.isEmpty)
                 }
-                .font(.caption)
-                .foregroundColor(.accent2)
             }
 
             Divider()
@@ -122,9 +161,13 @@ struct SettingsView: View {
             // Homebrew hint
             GroupBox {
                 VStack(alignment: .leading, spacing: 6) {
-                    Label("Install via Homebrew", systemImage: "shippingbox.fill")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
+                    HStack(spacing: 4) {
+                        Image(systemName: "shippingbox.fill")
+                            .font(.system(size: 13))
+                        Text("Install via Homebrew")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
                     Text("brew install ffmpeg")
                         .font(.system(.body, design: .monospaced))
                         .padding(6)
@@ -187,7 +230,7 @@ struct SettingsView: View {
 // MARK: - Welcome Setup View
 
 struct WelcomeSetupView: View {
-    @State private var settings = AppSettings.shared
+    @ObservedObject private var settings = AppSettings.shared
     @State private var animateIn = false
 
     var body: some View {

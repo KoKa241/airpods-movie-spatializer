@@ -20,7 +20,7 @@ struct MediaInfoView: View {
                 // File name
                 HStack(spacing: 10) {
                     Image(systemName: "doc.fill")
-                        .foregroundStyle(LinearGradient.accentGradient)
+                        .foregroundColor(.accent1)
                         .font(.title2)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(mediaInfo.url.lastPathComponent)
