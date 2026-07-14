@@ -161,7 +161,7 @@ struct StreamCard<Content: View>: View {
                 Image(systemName: icon)
                     .font(.caption)
                     .foregroundColor(color)
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.caption)
                     .fontWeight(.semibold)
                     .foregroundColor(color)

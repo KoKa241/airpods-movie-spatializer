@@ -89,11 +89,11 @@ enum AudioCompatibility {
 
     var displayName: String {
         switch self {
-        case .spatialReady: return "Spatial Audio Ready"
-        case .surroundCompatible: return "Surround (Spatial Compatible)"
-        case .stereoOnly: return "Stereo"
-        case .needsTranscode: return "Needs Transcoding"
-        case .noAudio: return "No Audio"
+        case .spatialReady: return String(localized: "Spatial Audio Ready")
+        case .surroundCompatible: return String(localized: "Surround (Spatial Compatible)")
+        case .stereoOnly: return String(localized: "Stereo")
+        case .needsTranscode: return String(localized: "Needs Transcoding")
+        case .noAudio: return String(localized: "No Audio")
         }
     }
 

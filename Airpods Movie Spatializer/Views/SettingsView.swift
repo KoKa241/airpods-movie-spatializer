@@ -118,6 +118,35 @@ struct SettingsView: View {
 
             Divider()
 
+            // Language Settings
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 8) {
+                    Image(systemName: "globe")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.accent1)
+                    Text("Interface Language")
+                        .font(.headline)
+                }
+
+                HStack(spacing: 8) {
+                    ForEach([
+                        ("system", "🖥", "System"),
+                        ("en", "🇬🇧", "English"),
+                        ("ru", "🇷🇺", "Русский"),
+                        ("uk", "🇺🇦", "Укр")
+                    ], id: \.0) { id, flag, label in
+                        LanguageTile(
+                            flag: flag,
+                            label: label,
+                            isSelected: settings.appLanguage == id,
+                            action: { settings.appLanguage = id }
+                        )
+                    }
+                }
+            }
+
+            Divider()
+
             // Verify & status
             HStack(spacing: 12) {
                 Button {
@@ -326,5 +355,45 @@ struct WelcomeSetupView: View {
                 animateIn = true
             }
         }
+    }
+}
+
+// MARK: - Language Tile
+
+struct LanguageTile: View {
+    let flag: String
+    let label: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                Text(flag)
+                    .font(.system(size: 24))
+                Text(label)
+                    .font(.caption2)
+                    .fontWeight(isSelected ? .semibold : .regular)
+            }
+            .frame(width: 65, height: 65)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(isSelected ? Color.accent1.opacity(0.2) : Color.white.opacity(isHovered ? 0.08 : 0.03))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(
+                        isSelected ? Color.accent1 : Color.white.opacity(0.1),
+                        lineWidth: isSelected ? 2 : 1
+                    )
+            )
+            .scaleEffect(isHovered && !isSelected ? 1.05 : 1.0)
+            .animation(.spring(response: 0.3), value: isHovered)
+            .animation(.spring(response: 0.3), value: isSelected)
+        }
+        .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
     }
 }

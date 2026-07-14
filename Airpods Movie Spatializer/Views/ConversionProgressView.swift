@@ -20,7 +20,7 @@ struct ConversionProgressView: View {
                 // Phase header
                 SectionHeader(
                     title: ffmpeg.isConverting ? "Converting..." : (ffmpeg.progress >= 1 ? "Done!" : "Cancelled"),
-                    icon: ffmpeg.isConverting ? "waveform.badge.sparkles" : (ffmpeg.progress >= 1 ? "checkmark.circle.fill" : "xmark.circle.fill")
+                    icon: ffmpeg.isConverting ? "waveform" : (ffmpeg.progress >= 1 ? "checkmark.circle.fill" : "xmark.circle.fill")
                 )
 
                 Divider().opacity(0.3)

@@ -3,6 +3,7 @@ import UserNotifications
 
 @main
 struct Airpods_Movie_SpatializerApp: App {
+    @StateObject private var settings = AppSettings.shared
 
     init() {
         // Request notification permission
@@ -12,6 +13,7 @@ struct Airpods_Movie_SpatializerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.locale, settings.appLanguage == "system" ? .current : Locale(identifier: settings.appLanguage))
         }
         .commands {
             CommandGroup(replacing: .newItem) { }
@@ -19,6 +21,7 @@ struct Airpods_Movie_SpatializerApp: App {
 
         Settings {
             SettingsView()
+                .environment(\.locale, settings.appLanguage == "system" ? .current : Locale(identifier: settings.appLanguage))
         }
     }
 }

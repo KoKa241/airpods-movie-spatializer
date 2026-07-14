@@ -1,0 +1,101 @@
+"Audio stream is copied without re-encoding. Maximum quality." = "Audio stream is copied without re-encoding. Maximum quality.";
+"Transcoded to Dolby Digital Plus. Supports Spatial Audio on AirPods." = "Transcoded to Dolby Digital Plus. Supports Spatial Audio on AirPods.";
+"Transcoded to Dolby Digital 5.1. Compatible with Spatial Audio." = "Transcoded to Dolby Digital 5.1. Compatible with Spatial Audio.";
+"Transcoded to stereo AAC. Spatial Audio is unavailable." = "Transcoded to stereo AAC. Spatial Audio is unavailable.";
+"Stereo upmix → 5.1 via FFmpeg surround filter. Enables Spatial Audio on AirPods." = "Stereo upmix → 5.1 via FFmpeg surround filter. Enables Spatial Audio on AirPods.";
+"Audio stream not found — only video will be copied." = "Audio stream not found — only video will be copied.";
+"E-AC3 (Dolby Digital+) already supports Spatial Audio — remuxing without re-encoding." = "E-AC3 (Dolby Digital+) already supports Spatial Audio — remuxing without re-encoding.";
+"E-AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "E-AC3 stereo — you can enable Force Spatial Upmix for 5.1.";
+"AC3 5.1 is compatible with Spatial Audio — remuxing without re-encoding." = "AC3 5.1 is compatible with Spatial Audio — remuxing without re-encoding.";
+"AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "AC3 stereo — you can enable Force Spatial Upmix for 5.1.";
+"Multichannel AAC is compatible with Spatial Audio — remuxing." = "Multichannel AAC is compatible with Spatial Audio — remuxing.";
+"AAC stereo — you can enable Force Spatial Upmix to activate Spatial Audio." = "AAC stereo — you can enable Force Spatial Upmix to activate Spatial Audio.";
+"TrueHD is not supported in MP4. Will be transcoded to E-AC3 (Dolby Digital+) retaining 5.1/7.1 quality." = "TrueHD is not supported in MP4. Will be transcoded to E-AC3 (Dolby Digital+) retaining 5.1/7.1 quality.";
+"DTS is not supported in MP4. Will be transcoded to E-AC3 for Spatial Audio compatibility." = "DTS is not supported in MP4. Will be transcoded to E-AC3 for Spatial Audio compatibility.";
+"Multichannel codec will be transcoded to E-AC3 for Spatial Audio." = "Multichannel codec will be transcoded to E-AC3 for Spatial Audio.";
+"Stereo codec — you can enable Force Spatial Upmix or keep stereo AAC." = "Stereo codec — you can enable Force Spatial Upmix or keep stereo AAC.";
+"Unknown codec will be transcoded for maximum compatibility." = "Unknown codec will be transcoded for maximum compatibility.";
+
+"Stereo → 5.1 via FFmpeg surround filter. Activates Spatial Audio on AirPods." = "Stereo → 5.1 via FFmpeg surround filter. Activates Spatial Audio on AirPods.";
+
+"System Default" = "System Default";
+"Language" = "Language";
+"Audio Tracks" = "Audio Tracks";
+"Recommended Action" = "Recommended Action";
+"Force Spatial Upmix" = "Force Spatial Upmix";
+"Output File" = "Output File";
+"FFmpeg Command Preview" = "FFmpeg Command Preview";
+"Convert to Spatial Audio" = "Convert to Spatial Audio";
+"Conversion Settings" = "Conversion Settings";
+
+/* General UI */
+"AirPods Spatializer" = "AirPods Spatializer";
+"Spatial Audio Converter" = "Spatial Audio Converter";
+"Analyzing file..." = "Analyzing file...";
+"Conversion Error" = "Conversion Error";
+"Converting..." = "Converting...";
+"Done!" = "Done!";
+"Cancelled" = "Cancelled";
+"Select a video file to convert" = "Select a video file to convert";
+"Choose File" = "Choose File";
+"Drop Video File Here" = "Drop Video File Here";
+"Release to Load" = "Release to Load";
+"or" = "or";
+"MKV · AVI · MP4 · MOV · TS · WMV and more" = "MKV · AVI · MP4 · MOV · TS · WMV and more";
+
+/* Features */
+"Spatial Audio" = "Spatial Audio";
+"Smart Remux" = "Smart Remux";
+"Auto-detect Codec" = "Auto-detect Codec";
+"5.1 Upmix" = "5.1 Upmix";
+
+/* File Info */
+"File Info" = "File Info";
+"Video" = "Video";
+"Audio" = "Audio";
+"Codec" = "Codec";
+"Resolution" = "Resolution";
+"Frame Rate" = "Frame Rate";
+"Bitrate" = "Bitrate";
+"Channels" = "Channels";
+"Layout" = "Layout";
+"Sample Rate" = "Sample Rate";
+"%lld subtitle track(s) found — will be included as mov_text" = "%lld subtitle track(s) found — will be included as mov_text";
+"Default" = "Default";
+
+/* Settings & Welcome */
+"Settings" = "Settings";
+"Configure FFmpeg binary path" = "Configure FFmpeg binary path";
+"FFmpeg Binary" = "FFmpeg Binary";
+"FFprobe Binary" = "FFprobe Binary";
+"Path to ffmpeg binary..." = "Path to ffmpeg binary...";
+"Path to ffprobe (auto-detected)..." = "Path to ffprobe (auto-detected)...";
+"Browse" = "Browse";
+"Auto-detect" = "Auto-detect";
+"Remove Quarantine" = "Remove Quarantine";
+"Interface Language" = "Interface Language";
+"System" = "System";
+"English" = "English";
+"Русский" = "Russian";
+"Укр" = "Ukrainian";
+"Verify" = "Verify";
+"Install via Homebrew" = "Install via Homebrew";
+"After install, the binary is usually at /opt/homebrew/bin/ffmpeg" = "After install, the binary is usually at /opt/homebrew/bin/ffmpeg";
+"Quarantine removed from ffmpeg ✓" = "Quarantine removed from ffmpeg ✓";
+"Quarantine removed from ffprobe ✓" = "Quarantine removed from ffprobe ✓";
+"Nothing to remove or failed" = "Nothing to remove or failed";
+"Binary not found or not executable" = "Binary not found or not executable";
+
+"Convert any video for Apple Spatial Audio" = "Convert any video for Apple Spatial Audio";
+"First, select your FFmpeg binary" = "First, select your FFmpeg binary";
+"FFmpeg path..." = "FFmpeg path...";
+"Select FFmpeg binary" = "Select FFmpeg binary";
+"Common locations:" = "Common locations:";
+"Get Started" = "Get Started";
+
+/* Compatibility Statuses */
+"Spatial Audio Ready" = "Spatial Audio Ready";
+"Surround (Spatial Compatible)" = "Surround (Spatial Compatible)";
+"Stereo" = "Stereo";
+"Needs Transcoding" = "Needs Transcoding";
+"No Audio" = "No Audio";

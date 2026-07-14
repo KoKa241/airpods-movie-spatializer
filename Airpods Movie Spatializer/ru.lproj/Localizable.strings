@@ -1,0 +1,101 @@
+"Audio stream is copied without re-encoding. Maximum quality." = "Аудиопоток копируется без перекодировки. Максимальное качество.";
+"Transcoded to Dolby Digital Plus. Supports Spatial Audio on AirPods." = "Перекодировка в Dolby Digital Plus. Поддерживает Spatial Audio на AirPods.";
+"Transcoded to Dolby Digital 5.1. Compatible with Spatial Audio." = "Перекодировка в Dolby Digital 5.1. Совместим со Spatial Audio.";
+"Transcoded to stereo AAC. Spatial Audio is unavailable." = "Перекодировка в стерео AAC. Spatial Audio недоступен.";
+"Stereo upmix → 5.1 via FFmpeg surround filter. Enables Spatial Audio on AirPods." = "Стерео upmix → 5.1 через FFmpeg surround filter. Включает Spatial Audio на AirPods.";
+"Audio stream not found — only video will be copied." = "Аудиопоток не найден — только видео будет скопировано.";
+"E-AC3 (Dolby Digital+) already supports Spatial Audio — remuxing without re-encoding." = "E-AC3 (Dolby Digital+) уже поддерживает Spatial Audio — выполняется remux без перекодировки.";
+"E-AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "E-AC3 стерео — можно включить Force Spatial Upmix для 5.1.";
+"AC3 5.1 is compatible with Spatial Audio — remuxing without re-encoding." = "AC3 5.1 совместим со Spatial Audio — выполняется remux без перекодировки.";
+"AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "AC3 стерео — можно включить Force Spatial Upmix для 5.1.";
+"Multichannel AAC is compatible with Spatial Audio — remuxing." = "AAC многоканальный совместим со Spatial Audio — выполняется remux.";
+"AAC stereo — you can enable Force Spatial Upmix to activate Spatial Audio." = "AAC стерео — можно включить Force Spatial Upmix для активации Spatial Audio.";
+"TrueHD is not supported in MP4. Will be transcoded to E-AC3 (Dolby Digital+) retaining 5.1/7.1 quality." = "TrueHD не поддерживается в MP4. Будет перекодирован в E-AC3 (Dolby Digital+) с сохранением качества 5.1/7.1.";
+"DTS is not supported in MP4. Will be transcoded to E-AC3 for Spatial Audio compatibility." = "DTS не поддерживается в MP4. Будет перекодирован в E-AC3 для совместимости со Spatial Audio.";
+"Multichannel codec will be transcoded to E-AC3 for Spatial Audio." = "Многоканальный кодек будет перекодирован в E-AC3 для Spatial Audio.";
+"Stereo codec — you can enable Force Spatial Upmix or keep stereo AAC." = "Стерео кодек — можно включить Force Spatial Upmix или оставить стерео AAC.";
+"Unknown codec will be transcoded for maximum compatibility." = "Неизвестный кодек будет перекодирован для максимальной совместимости.";
+
+"Stereo → 5.1 via FFmpeg surround filter. Activates Spatial Audio on AirPods." = "Стерео → 5.1 через FFmpeg surround filter. Активирует Spatial Audio на AirPods.";
+
+"System Default" = "Системный";
+"Language" = "Язык";
+"Audio Tracks" = "Аудиодорожки";
+"Recommended Action" = "Рекомендуемое действие";
+"Force Spatial Upmix" = "Включить Spatial Upmix";
+"Output File" = "Итоговый файл";
+"FFmpeg Command Preview" = "Предпросмотр команды FFmpeg";
+"Convert to Spatial Audio" = "Конвертировать";
+"Conversion Settings" = "Настройки конвертации";
+
+/* General UI */
+"AirPods Spatializer" = "AirPods Spatializer";
+"Spatial Audio Converter" = "Конвертер Spatial Audio";
+"Analyzing file..." = "Анализ файла...";
+"Conversion Error" = "Ошибка конвертации";
+"Converting..." = "Конвертация...";
+"Done!" = "Готово!";
+"Cancelled" = "Отменено";
+"Select a video file to convert" = "Выберите видеофайл для конвертации";
+"Choose File" = "Выбрать файл";
+"Drop Video File Here" = "Перетащите видео сюда";
+"Release to Load" = "Отпустите для загрузки";
+"or" = "или";
+"MKV · AVI · MP4 · MOV · TS · WMV and more" = "MKV · AVI · MP4 · MOV · TS · WMV и другие";
+
+/* Features */
+"Spatial Audio" = "Spatial Audio";
+"Smart Remux" = "Умный Remux";
+"Auto-detect Codec" = "Автоопределение кодека";
+"5.1 Upmix" = "Upmix в 5.1";
+
+/* File Info */
+"File Info" = "Информация о файле";
+"Video" = "Видео";
+"Audio" = "Аудио";
+"Codec" = "Кодек";
+"Resolution" = "Разрешение";
+"Frame Rate" = "Кадровая частота";
+"Bitrate" = "Битрейт";
+"Channels" = "Каналы";
+"Layout" = "Раскладка";
+"Sample Rate" = "Частота дискретизации";
+"%lld subtitle track(s) found — will be included as mov_text" = "Найдено %lld субтитров — будут встроены как mov_text";
+"Default" = "По умолчанию";
+
+/* Settings & Welcome */
+"Settings" = "Настройки";
+"Configure FFmpeg binary path" = "Настройка пути к бинарнику FFmpeg";
+"FFmpeg Binary" = "Бинарник FFmpeg";
+"FFprobe Binary" = "Бинарник FFprobe";
+"Path to ffmpeg binary..." = "Путь к исполняемому файлу ffmpeg...";
+"Path to ffprobe (auto-detected)..." = "Путь к ffprobe (определяется автоматически)...";
+"Browse" = "Обзор";
+"Auto-detect" = "Автоопределение";
+"Remove Quarantine" = "Снять карантин";
+"Interface Language" = "Язык интерфейса";
+"System" = "Системный";
+"English" = "English";
+"Русский" = "Русский";
+"Укр" = "Українська";
+"Verify" = "Проверить";
+"Install via Homebrew" = "Установить через Homebrew";
+"After install, the binary is usually at /opt/homebrew/bin/ffmpeg" = "После установки бинарник обычно находится по пути /opt/homebrew/bin/ffmpeg";
+"Quarantine removed from ffmpeg ✓" = "Карантин с ffmpeg снят ✓";
+"Quarantine removed from ffprobe ✓" = "Карантин с ffprobe снят ✓";
+"Nothing to remove or failed" = "Нечего снимать или ошибка";
+"Binary not found or not executable" = "Бинарник не найден или не исполняемый";
+
+"Convert any video for Apple Spatial Audio" = "Конвертируйте любое видео под Apple Spatial Audio";
+"First, select your FFmpeg binary" = "Сначала выберите бинарник FFmpeg";
+"FFmpeg path..." = "Путь к FFmpeg...";
+"Select FFmpeg binary" = "Выберите исполняемый файл FFmpeg";
+"Common locations:" = "Типичные пути:";
+"Get Started" = "Начать";
+
+/* Compatibility Statuses */
+"Spatial Audio Ready" = "Готов к Spatial Audio";
+"Surround (Spatial Compatible)" = "Surround (совместим со Spatial)";
+"Stereo" = "Стерео";
+"Needs Transcoding" = "Требуется конвертация";
+"No Audio" = "Нет аудио";

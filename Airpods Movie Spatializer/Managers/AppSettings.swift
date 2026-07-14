@@ -12,6 +12,7 @@ final class AppSettings: ObservableObject {
     // Keys
     private let ffmpegPathKey  = "ffmpegPath"
     private let ffprobePathKey = "ffprobePath"
+    private let appLanguageKey = "appLanguage"
 
     // Common locations where ffmpeg is usually installed
     static let commonFFmpegPaths = [
@@ -27,10 +28,14 @@ final class AppSettings: ObservableObject {
     @Published var ffprobePath: String {
         didSet { defaults.set(ffprobePath, forKey: ffprobePathKey) }
     }
+    @Published var appLanguage: String {
+        didSet { defaults.set(appLanguage, forKey: appLanguageKey) }
+    }
 
     private init() {
         ffmpegPath  = defaults.string(forKey: ffmpegPathKey)  ?? ""
         ffprobePath = defaults.string(forKey: ffprobePathKey) ?? ""
+        appLanguage = defaults.string(forKey: appLanguageKey) ?? "system"
 
         // On first launch, try to auto-detect from common locations
         if ffmpegPath.isEmpty {

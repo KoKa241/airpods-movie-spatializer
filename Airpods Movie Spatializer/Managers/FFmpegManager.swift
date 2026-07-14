@@ -66,7 +66,7 @@ final class FFmpegManager: ObservableObject {
 
     // MARK: - Build Command
 
-    func buildArguments(for job: ConversionJob, mediaInfo: MediaInfo, mode: AudioConversionMode) -> [String] {
+    func buildArguments(for job: ConversionJob, mediaInfo: MediaInfo) -> [String] {
         var args = ["-y"]   // overwrite output
 
         // Input
@@ -74,40 +74,46 @@ final class FFmpegManager: ObservableObject {
 
         // Video: always copy
         args += ["-c:v", "copy"]
-
-        // Map the correct audio stream
-        let audioStreamIndex = mediaInfo.audioStreams.indices.contains(job.selectedAudioStreamIndex)
-            ? mediaInfo.audioStreams[job.selectedAudioStreamIndex].id
-            : 0
-
         args += ["-map", "0:v:0"]                 // first video stream
-        args += ["-map", "0:\(audioStreamIndex)"]  // selected audio stream
 
-        // Audio codec
-        let effectiveMode = job.forceSpatialUpmix ? AudioConversionMode.spatialUpmix : mode
+        let enabledJobs = job.audioJobs.filter { $0.isEnabled }
 
-        switch effectiveMode {
-        case .copy:
-            args += ["-c:a", "copy"]
+        for (outIndex, audioJob) in enabledJobs.enumerated() {
+            let streamID = mediaInfo.audioStreams.indices.contains(audioJob.index)
+                ? mediaInfo.audioStreams[audioJob.index].id
+                : 0
+            
+            args += ["-map", "0:\(streamID)"]
+            
+            let effectiveMode = audioJob.forceSpatialUpmix ? AudioConversionMode.spatialUpmix : audioJob.strategy.audioMode
+            
+            let cKey = "-c:a:\(outIndex)"
+            let bKey = "-b:a:\(outIndex)"
+            let acKey = "-ac:\(outIndex)"
+            let fKey = "-filter:a:\(outIndex)"
 
-        case .toEAC3:
-            args += ["-c:a", "eac3"]
-            args += ["-b:a", "640k"]
+            switch effectiveMode {
+            case .copy:
+                args += [cKey, "copy"]
 
-        case .toAC3:
-            args += ["-c:a", "ac3"]
-            args += ["-b:a", "640k"]
+            case .toEAC3:
+                args += [cKey, "eac3"]
+                args += [bKey, "640k"]
 
-        case .toAACStereo:
-            args += ["-c:a", "aac"]
-            args += ["-b:a", "256k"]
-            args += ["-ac", "2"]
+            case .toAC3:
+                args += [cKey, "ac3"]
+                args += [bKey, "640k"]
 
-        case .spatialUpmix:
-            // Upmix stereo → 5.1 using surround filter, then encode to E-AC3
-            args += ["-af", "surround"]
-            args += ["-c:a", "eac3"]
-            args += ["-b:a", "640k"]
+            case .toAACStereo:
+                args += [cKey, "aac"]
+                args += [bKey, "256k"]
+                args += [acKey, "2"]
+
+            case .spatialUpmix:
+                args += [fKey, "surround"]
+                args += [cKey, "eac3"]
+                args += [bKey, "640k"]
+            }
         }
 
         // Copy subtitle streams if present
@@ -124,8 +130,8 @@ final class FFmpegManager: ObservableObject {
         return args
     }
 
-    func buildCommandPreview(for job: ConversionJob, mediaInfo: MediaInfo, mode: AudioConversionMode) -> String {
-        let args = buildArguments(for: job, mediaInfo: mediaInfo, mode: mode)
+    func buildCommandPreview(for job: ConversionJob, mediaInfo: MediaInfo) -> String {
+        let args = buildArguments(for: job, mediaInfo: mediaInfo)
         let ffmpegPath = AppSettings.shared.ffmpegPath
         return ([ffmpegPath] + args).map { arg in
             arg.contains(" ") ? "\"\(arg)\"" : arg
@@ -134,7 +140,7 @@ final class FFmpegManager: ObservableObject {
 
     // MARK: - Convert
 
-    func convert(job: ConversionJob, mediaInfo: MediaInfo, mode: AudioConversionMode) async throws {
+    func convert(job: ConversionJob, mediaInfo: MediaInfo) async throws {
         guard !isConverting else { return }
 
         isConverting = true
@@ -151,7 +157,7 @@ final class FFmpegManager: ObservableObject {
             throw FFmpegError.ffmpegNotConfigured
         }
 
-        let args    = buildArguments(for: job, mediaInfo: mediaInfo, mode: mode)
+        let args    = buildArguments(for: job, mediaInfo: mediaInfo)
         let execURL = URL(fileURLWithPath: settings.ffmpegPath)
 
         // Remove stale output if it exists (-y handles it but just in case)

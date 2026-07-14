@@ -1,11 +1,19 @@
 import Foundation
 
+// MARK: - Audio Stream Job
+
+struct AudioStreamJob: Equatable {
+    let index: Int
+    var isEnabled: Bool
+    var forceSpatialUpmix: Bool
+    let strategy: ConversionStrategy
+}
+
 // MARK: - Conversion Job
 
 struct ConversionJob {
     let inputURL: URL
-    let selectedAudioStreamIndex: Int   // Index in MediaInfo.audioStreams
-    let forceSpatialUpmix: Bool         // Upmix stereo → 5.1 via surround filter
+    let audioJobs: [AudioStreamJob]
 
     var outputURL: URL {
         let dir = inputURL.deletingLastPathComponent()
@@ -36,22 +44,22 @@ enum AudioConversionMode: String, CaseIterable {
     var description: String {
         switch self {
         case .copy:
-            return "Audio stream копируется без перекодировки. Максимальное качество."
+            return String(localized: "Audio stream is copied without re-encoding. Maximum quality.")
         case .toEAC3:
-            return "Перекодировка в Dolby Digital Plus. Поддерживает Spatial Audio на AirPods."
+            return String(localized: "Transcoded to Dolby Digital Plus. Supports Spatial Audio on AirPods.")
         case .toAC3:
-            return "Перекодировка в Dolby Digital 5.1. Совместим со Spatial Audio."
+            return String(localized: "Transcoded to Dolby Digital 5.1. Compatible with Spatial Audio.")
         case .toAACStereo:
-            return "Перекодировка в стерео AAC. Spatial Audio недоступен."
+            return String(localized: "Transcoded to stereo AAC. Spatial Audio is unavailable.")
         case .spatialUpmix:
-            return "Стерео upmix → 5.1 через FFmpeg surround filter. Включает Spatial Audio на AirPods."
+            return String(localized: "Stereo upmix → 5.1 via FFmpeg surround filter. Enables Spatial Audio on AirPods.")
         }
     }
 }
 
 // MARK: - Recommended Conversion Strategy
 
-struct ConversionStrategy {
+struct ConversionStrategy: Equatable {
     let audioMode: AudioConversionMode
     let canForceSpatial: Bool
     let explanation: String
@@ -62,7 +70,7 @@ struct ConversionStrategy {
             return ConversionStrategy(
                 audioMode: .copy,
                 canForceSpatial: false,
-                explanation: "Аудио поток не найден — только видео будет скопировано."
+                explanation: String(localized: "Audio stream not found — only video will be copied.")
             )
         }
 
@@ -76,13 +84,13 @@ struct ConversionStrategy {
                 return ConversionStrategy(
                     audioMode: .copy,
                     canForceSpatial: false,
-                    explanation: "E-AC3 (Dolby Digital+) уже поддерживает Spatial Audio — выполняется remux без перекодировки."
+                    explanation: String(localized: "E-AC3 (Dolby Digital+) already supports Spatial Audio — remuxing without re-encoding.")
                 )
             } else {
                 return ConversionStrategy(
                     audioMode: .copy,
                     canForceSpatial: true,
-                    explanation: "E-AC3 стерео — можно включить Force Spatial Upmix для 5.1."
+                    explanation: String(localized: "E-AC3 stereo — you can enable Force Spatial Upmix for 5.1.")
                 )
             }
 
@@ -91,13 +99,13 @@ struct ConversionStrategy {
                 return ConversionStrategy(
                     audioMode: .copy,
                     canForceSpatial: false,
-                    explanation: "AC3 5.1 совместим со Spatial Audio — выполняется remux без перекодировки."
+                    explanation: String(localized: "AC3 5.1 is compatible with Spatial Audio — remuxing without re-encoding.")
                 )
             } else {
                 return ConversionStrategy(
                     audioMode: .copy,
                     canForceSpatial: true,
-                    explanation: "AC3 стерео — можно включить Force Spatial Upmix для 5.1."
+                    explanation: String(localized: "AC3 stereo — you can enable Force Spatial Upmix for 5.1.")
                 )
             }
 
@@ -106,13 +114,13 @@ struct ConversionStrategy {
                 return ConversionStrategy(
                     audioMode: .copy,
                     canForceSpatial: false,
-                    explanation: "AAC многоканальный совместим со Spatial Audio — выполняется remux."
+                    explanation: String(localized: "Multichannel AAC is compatible with Spatial Audio — remuxing.")
                 )
             } else {
                 return ConversionStrategy(
                     audioMode: .copy,
                     canForceSpatial: true,
-                    explanation: "AAC стерео — можно включить Force Spatial Upmix для активации Spatial Audio."
+                    explanation: String(localized: "AAC stereo — you can enable Force Spatial Upmix to activate Spatial Audio.")
                 )
             }
 
@@ -120,14 +128,14 @@ struct ConversionStrategy {
             return ConversionStrategy(
                 audioMode: .toEAC3,
                 canForceSpatial: false,
-                explanation: "TrueHD не поддерживается в MP4. Будет перекодирован в E-AC3 (Dolby Digital+) с сохранением качества 5.1/7.1."
+                explanation: String(localized: "TrueHD is not supported in MP4. Will be transcoded to E-AC3 (Dolby Digital+) retaining 5.1/7.1 quality.")
             )
 
         case "dts", "dts-hd", "dts_hd", "dtshd":
             return ConversionStrategy(
                 audioMode: .toEAC3,
                 canForceSpatial: false,
-                explanation: "DTS не поддерживается в MP4. Будет перекодирован в E-AC3 для совместимости со Spatial Audio."
+                explanation: String(localized: "DTS is not supported in MP4. Will be transcoded to E-AC3 for Spatial Audio compatibility.")
             )
 
         case "mp3", "mp2", "flac", "vorbis", "opus", "pcm_s16le", "pcm_s24le":
@@ -135,13 +143,13 @@ struct ConversionStrategy {
                 return ConversionStrategy(
                     audioMode: .toEAC3,
                     canForceSpatial: false,
-                    explanation: "Многоканальный \(codec.uppercased()) будет перекодирован в E-AC3 для Spatial Audio."
+                    explanation: String(localized: "Multichannel codec will be transcoded to E-AC3 for Spatial Audio.")
                 )
             } else {
                 return ConversionStrategy(
                     audioMode: .toAACStereo,
                     canForceSpatial: true,
-                    explanation: "\(codec.uppercased()) стерео — можно включить Force Spatial Upmix или оставить стерео AAC."
+                    explanation: String(localized: "Stereo codec — you can enable Force Spatial Upmix or keep stereo AAC.")
                 )
             }
 
@@ -149,7 +157,7 @@ struct ConversionStrategy {
             return ConversionStrategy(
                 audioMode: channels >= 6 ? .toEAC3 : .toAACStereo,
                 canForceSpatial: channels < 6,
-                explanation: "Неизвестный кодек \(codec) будет перекодирован для максимальной совместимости."
+                explanation: String(localized: "Unknown codec will be transcoded for maximum compatibility.")
             )
         }
     }

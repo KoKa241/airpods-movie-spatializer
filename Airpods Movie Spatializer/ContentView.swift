@@ -20,8 +20,7 @@ struct ContentView: View {
     // UI State
     @State private var screen: AppScreen = .dropZone
     @State private var selectedURL: URL? = nil
-    @State private var selectedAudioIndex: Int = 0
-    @State private var forceSpatial: Bool = false
+    @State private var audioJobs: [AudioStreamJob] = []
     @State private var showCommandPreview: Bool = false
     @State private var showLog: Bool = false
     @State private var errorMessage: String? = nil
@@ -191,8 +190,7 @@ struct ContentView: View {
 
             ConversionSettingsView(
                 mediaInfo: info,
-                selectedAudioIndex: $selectedAudioIndex,
-                forceSpatial: $forceSpatial,
+                audioJobs: $audioJobs,
                 showCommandPreview: $showCommandPreview,
                 onConvert: { startConversion(info) }
             )
@@ -240,14 +238,21 @@ struct ContentView: View {
 
     private func loadFile(_ url: URL) {
         selectedURL = url
-        selectedAudioIndex = 0
-        forceSpatial = false
+        audioJobs = []
         screen = .probing
 
         Task {
             do {
                 let info = try await FFmpegManager.shared.probe(url: url)
                 withAnimation(.spring(response: 0.4)) {
+                    audioJobs = info.audioStreams.indices.map { i in
+                        AudioStreamJob(
+                            index: i,
+                            isEnabled: i == 0,
+                            forceSpatialUpmix: false,
+                            strategy: ConversionStrategy.recommend(for: info, audioStreamIndex: i)
+                        )
+                    }
                     screen = .ready(info)
                 }
             } catch {
@@ -262,11 +267,9 @@ struct ContentView: View {
     }
 
     private func startConversion(_ info: MediaInfo) {
-        let strategy = ConversionStrategy.recommend(for: info, audioStreamIndex: selectedAudioIndex)
         let job = ConversionJob(
             inputURL: info.url,
-            selectedAudioStreamIndex: selectedAudioIndex,
-            forceSpatialUpmix: forceSpatial && strategy.canForceSpatial
+            audioJobs: audioJobs
         )
 
         withAnimation {
@@ -275,7 +278,7 @@ struct ContentView: View {
 
         Task {
             do {
-                try await FFmpegManager.shared.convert(job: job, mediaInfo: info, mode: strategy.audioMode)
+                try await FFmpegManager.shared.convert(job: job, mediaInfo: info)
                 withAnimation {
                     screen = .done(info, job)
                 }
@@ -299,8 +302,7 @@ struct ContentView: View {
         withAnimation(.spring(response: 0.4)) {
             screen = .dropZone
             selectedURL = nil
-            selectedAudioIndex = 0
-            forceSpatial = false
+            audioJobs = []
             showCommandPreview = false
             showLog = false
             ffmpeg.logLines = []
@@ -331,10 +333,10 @@ struct ContentView: View {
 
     private var features: [(String, String)] {
         [
-            ("waveform.badge.sparkles", "Spatial Audio"),
+            ("sparkles", "Spatial Audio"),
             ("doc.on.doc.fill", "Smart Remux"),
             ("arrow.triangle.2.circlepath", "Auto-detect Codec"),
-            ("sparkles", "5.1 Upmix"),
+            ("waveform", "5.1 Upmix"),
         ]
     }
 }

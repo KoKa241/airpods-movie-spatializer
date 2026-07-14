@@ -169,11 +169,11 @@ struct InfoRow: View {
 
     var body: some View {
         HStack {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.caption)
                 .foregroundColor(.textSecondary)
                 .frame(width: 100, alignment: .leading)
-            Text(value)
+            Text(LocalizedStringKey(value))
                 .font(.caption)
                 .fontWeight(.medium)
                 .foregroundColor(valueColor)
@@ -193,7 +193,7 @@ struct SectionHeader: View {
             Image(systemName: icon)
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundColor(.accent1)
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.headline)
                 .fontWeight(.semibold)
             Spacer()

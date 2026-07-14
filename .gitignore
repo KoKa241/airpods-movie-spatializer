@@ -1,0 +1,31 @@
+# Xcode
+#
+# Reference: https://github.com/github/gitignore/blob/main/Swift.gitignore
+
+# Build artifacts
+build/
+DerivedData/
+
+# Xcode personal settings / user state
+*.xcuserstate
+project.xcworkspace/xcuserdata/
+*.xcuserdatad
+*.xcworkspace
+!default.xcworkspace
+xcuserdata/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# macOS system files
+.DS_Store
+Files.dat
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# User-specific project settings
+*~.nib
+*.moved-aside
+*.pbxuser
