@@ -107,14 +107,16 @@ struct ConversionProgressView: View {
     private var logSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Button {
-                withAnimation(.spring(response: 0.3)) {
+                withAnimation(.easeInOut(duration: 0.22)) {
                     showLog.toggle()
                 }
             } label: {
                 HStack(spacing: 6) {
-                    Image(systemName: showLog ? "chevron.down" : "chevron.right")
+                    Image(systemName: "chevron.right")
                         .font(.caption2)
-                        .foregroundColor(.textSecondary)
+                        .foregroundColor(.textSecondary.opacity(0.6))
+                        .rotationEffect(.degrees(showLog ? 90 : 0))
+                        .animation(.easeInOut(duration: 0.2), value: showLog)
                     Text("FFmpeg Log")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
@@ -150,7 +152,12 @@ struct ConversionProgressView: View {
                         withAnimation { proxy.scrollTo("bottom") }
                     }
                 }
-                .transition(.opacity.combined(with: .move(edge: .top)))
+                .transition(
+                    .asymmetric(
+                        insertion: .opacity.combined(with: .scale(scale: 0.97, anchor: .top)),
+                        removal: .opacity
+                    )
+                )
             }
         }
     }

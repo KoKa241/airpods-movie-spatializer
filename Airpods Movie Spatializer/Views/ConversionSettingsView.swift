@@ -99,22 +99,23 @@ struct ConversionSettingsView: View {
     private var commandPreviewSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Button {
-                withAnimation(.spring(response: 0.3)) {
+                withAnimation(.easeInOut(duration: 0.22)) {
                     showCommandPreview.toggle()
                 }
             } label: {
                 HStack(spacing: 6) {
-                    Image(systemName: showCommandPreview ? "chevron.down" : "chevron.right")
+                    Image(systemName: "chevron.right")
                         .font(.caption2)
-                        .foregroundColor(.textSecondary)
-                        .animation(.spring(response: 0.3), value: showCommandPreview)
+                        .foregroundColor(.textSecondary.opacity(0.6))
+                        .rotationEffect(.degrees(showCommandPreview ? 90 : 0))
+                        .animation(.easeInOut(duration: 0.2), value: showCommandPreview)
                     Text("FFmpeg Command Preview")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                     Spacer()
                     Image(systemName: "terminal.fill")
                         .font(.caption)
-                        .foregroundColor(.textSecondary.opacity(0.5))
+                        .foregroundColor(.textSecondary.opacity(0.4))
                 }
             }
             .buttonStyle(.plain)
@@ -131,7 +132,12 @@ struct ConversionSettingsView: View {
                 .background(Color.black.opacity(0.6))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .frame(maxHeight: 140)
-                .transition(.opacity.combined(with: .move(edge: .top)))
+                .transition(
+                    .asymmetric(
+                        insertion: .opacity.combined(with: .scale(scale: 0.97, anchor: .top)),
+                        removal: .opacity
+                    )
+                )
             }
         }
     }
