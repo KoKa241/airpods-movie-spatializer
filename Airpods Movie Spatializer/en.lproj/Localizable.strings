@@ -3,17 +3,17 @@
 "Transcoded to Dolby Digital 5.1. Compatible with Spatial Audio." = "Transcoded to Dolby Digital 5.1. Compatible with Spatial Audio.";
 "Transcoded to stereo AAC. Spatial Audio is unavailable." = "Transcoded to stereo AAC. Spatial Audio is unavailable.";
 "Stereo upmix → 5.1 via FFmpeg surround filter. Enables Spatial Audio on AirPods." = "Stereo upmix → 5.1 via FFmpeg surround filter. Enables Spatial Audio on AirPods.";
-"Audio stream not found — only video will be copied." = "Audio stream not found — only video will be copied.";
-"E-AC3 (Dolby Digital+) already supports Spatial Audio — remuxing without re-encoding." = "E-AC3 (Dolby Digital+) already supports Spatial Audio — remuxing without re-encoding.";
-"E-AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "E-AC3 stereo — you can enable Force Spatial Upmix for 5.1.";
-"AC3 5.1 is compatible with Spatial Audio — remuxing without re-encoding." = "AC3 5.1 is compatible with Spatial Audio — remuxing without re-encoding.";
-"AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "AC3 stereo — you can enable Force Spatial Upmix for 5.1.";
-"Multichannel AAC is compatible with Spatial Audio — remuxing." = "Multichannel AAC is compatible with Spatial Audio — remuxing.";
-"AAC stereo — you can enable Force Spatial Upmix to activate Spatial Audio." = "AAC stereo — you can enable Force Spatial Upmix to activate Spatial Audio.";
+"Audio stream not found - only video will be copied." = "Audio stream not found - only video will be copied.";
+"E-AC3 (Dolby Digital+) already supports Spatial Audio - remuxing without re-encoding." = "E-AC3 (Dolby Digital+) already supports Spatial Audio - remuxing without re-encoding.";
+"E-AC3 stereo - you can enable Force Spatial Upmix for 5.1." = "E-AC3 stereo - you can enable Force Spatial Upmix for 5.1.";
+"AC3 5.1 is compatible with Spatial Audio - remuxing without re-encoding." = "AC3 5.1 is compatible with Spatial Audio - remuxing without re-encoding.";
+"AC3 stereo - you can enable Force Spatial Upmix for 5.1." = "AC3 stereo - you can enable Force Spatial Upmix for 5.1.";
+"Multichannel AAC is compatible with Spatial Audio - remuxing." = "Multichannel AAC is compatible with Spatial Audio - remuxing.";
+"AAC stereo - you can enable Force Spatial Upmix to activate Spatial Audio." = "AAC stereo - you can enable Force Spatial Upmix to activate Spatial Audio.";
 "TrueHD is not supported in MP4. Will be transcoded to E-AC3 (Dolby Digital+) retaining 5.1/7.1 quality." = "TrueHD is not supported in MP4. Will be transcoded to E-AC3 (Dolby Digital+) retaining 5.1/7.1 quality.";
 "DTS is not supported in MP4. Will be transcoded to E-AC3 for Spatial Audio compatibility." = "DTS is not supported in MP4. Will be transcoded to E-AC3 for Spatial Audio compatibility.";
 "Multichannel codec will be transcoded to E-AC3 for Spatial Audio." = "Multichannel codec will be transcoded to E-AC3 for Spatial Audio.";
-"Stereo codec — you can enable Force Spatial Upmix or keep stereo AAC." = "Stereo codec — you can enable Force Spatial Upmix or keep stereo AAC.";
+"Stereo codec - you can enable Force Spatial Upmix or keep stereo AAC." = "Stereo codec - you can enable Force Spatial Upmix or keep stereo AAC.";
 "Unknown codec will be transcoded for maximum compatibility." = "Unknown codec will be transcoded for maximum compatibility.";
 
 "Stereo → 5.1 via FFmpeg surround filter. Activates Spatial Audio on AirPods." = "Stereo → 5.1 via FFmpeg surround filter. Activates Spatial Audio on AirPods.";
@@ -60,7 +60,7 @@
 "Channels" = "Channels";
 "Layout" = "Layout";
 "Sample Rate" = "Sample Rate";
-"%lld subtitle track(s) found — will be included as mov_text" = "%lld subtitle track(s) found — will be included as mov_text";
+"%lld subtitle track(s) found - will be included as mov_text" = "%lld subtitle track(s) found - will be included as mov_text";
 "Default" = "Default";
 
 /* Settings & Welcome */

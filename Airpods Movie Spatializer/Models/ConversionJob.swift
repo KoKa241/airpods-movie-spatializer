@@ -5,7 +5,9 @@ import Foundation
 struct AudioStreamJob: Equatable {
     let index: Int
     var isEnabled: Bool
-    var forceSpatialUpmix: Bool
+    var isDefault: Bool
+    var useSpatializer: Bool    // whether to apply spatial/upmix processing
+    var forceSpatialUpmix: Bool { useSpatializer && strategy.canForceSpatial }
     let strategy: ConversionStrategy
 }
 

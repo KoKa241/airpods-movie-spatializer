@@ -3,17 +3,17 @@
 "Transcoded to Dolby Digital 5.1. Compatible with Spatial Audio." = "Перекодування в Dolby Digital 5.1. Сумісний зі Spatial Audio.";
 "Transcoded to stereo AAC. Spatial Audio is unavailable." = "Перекодування в stereo AAC. Spatial Audio недоступне.";
 "Stereo upmix → 5.1 via FFmpeg surround filter. Enables Spatial Audio on AirPods." = "Стерео upmix → 5.1 через FFmpeg surround filter. Вмикає Spatial Audio на AirPods.";
-"Audio stream not found — only video will be copied." = "Аудіопотік не знайдено — лише відео буде скопійовано.";
-"E-AC3 (Dolby Digital+) already supports Spatial Audio — remuxing without re-encoding." = "E-AC3 (Dolby Digital+) вже підтримує Spatial Audio — виконується remux без перекодування.";
-"E-AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "E-AC3 стерео — можна ввімкнути Force Spatial Upmix для 5.1.";
-"AC3 5.1 is compatible with Spatial Audio — remuxing without re-encoding." = "AC3 5.1 сумісний зі Spatial Audio — виконується remux без перекодування.";
-"AC3 stereo — you can enable Force Spatial Upmix for 5.1." = "AC3 стерео — можна ввімкнути Force Spatial Upmix для 5.1.";
-"Multichannel AAC is compatible with Spatial Audio — remuxing." = "AAC багатоканальний сумісний зі Spatial Audio — виконується remux.";
-"AAC stereo — you can enable Force Spatial Upmix to activate Spatial Audio." = "AAC стерео — можна ввімкнути Force Spatial Upmix для активації Spatial Audio.";
+"Audio stream not found - only video will be copied." = "Аудіопотік не знайдено - лише відео буде скопійовано.";
+"E-AC3 (Dolby Digital+) already supports Spatial Audio - remuxing without re-encoding." = "E-AC3 (Dolby Digital+) вже підтримує Spatial Audio - виконується remux без перекодування.";
+"E-AC3 stereo - you can enable Force Spatial Upmix for 5.1." = "E-AC3 стерео - можна ввімкнути Force Spatial Upmix для 5.1.";
+"AC3 5.1 is compatible with Spatial Audio - remuxing without re-encoding." = "AC3 5.1 сумісний зі Spatial Audio - виконується remux без перекодування.";
+"AC3 stereo - you can enable Force Spatial Upmix for 5.1." = "AC3 стерео - можна ввімкнути Force Spatial Upmix для 5.1.";
+"Multichannel AAC is compatible with Spatial Audio - remuxing." = "AAC багатоканальний сумісний зі Spatial Audio - виконується remux.";
+"AAC stereo - you can enable Force Spatial Upmix to activate Spatial Audio." = "AAC стерео - можна ввімкнути Force Spatial Upmix для активації Spatial Audio.";
 "TrueHD is not supported in MP4. Will be transcoded to E-AC3 (Dolby Digital+) retaining 5.1/7.1 quality." = "TrueHD не підтримується в MP4. Буде перекодовано в E-AC3 (Dolby Digital+) зі збереженням якості 5.1/7.1.";
 "DTS is not supported in MP4. Will be transcoded to E-AC3 for Spatial Audio compatibility." = "DTS не підтримується в MP4. Буде перекодовано в E-AC3 для сумісності зі Spatial Audio.";
 "Multichannel codec will be transcoded to E-AC3 for Spatial Audio." = "Багатоканальний кодек буде перекодовано в E-AC3 для Spatial Audio.";
-"Stereo codec — you can enable Force Spatial Upmix or keep stereo AAC." = "Стерео кодек — можна ввімкнути Force Spatial Upmix або залишити стерео AAC.";
+"Stereo codec - you can enable Force Spatial Upmix or keep stereo AAC." = "Стерео кодек - можна ввімкнути Force Spatial Upmix або залишити стерео AAC.";
 "Unknown codec will be transcoded for maximum compatibility." = "Невідомий кодек буде перекодовано для максимальної сумісності.";
 
 "Stereo → 5.1 via FFmpeg surround filter. Activates Spatial Audio on AirPods." = "Стерео → 5.1 через FFmpeg surround filter. Активує Spatial Audio на AirPods.";
@@ -60,7 +60,7 @@
 "Channels" = "Канали";
 "Layout" = "Розкладка";
 "Sample Rate" = "Частота дискретизації";
-"%lld subtitle track(s) found — will be included as mov_text" = "Знайдено %lld субтитрів — будуть вбудовані як mov_text";
+"%lld subtitle track(s) found - will be included as mov_text" = "Знайдено %lld субтитрів - будуть вбудовані як mov_text";
 "Default" = "За замовчуванням";
 
 /* Settings & Welcome */

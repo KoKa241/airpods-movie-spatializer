@@ -246,11 +246,13 @@ struct ContentView: View {
                 let info = try await FFmpegManager.shared.probe(url: url)
                 withAnimation(.spring(response: 0.4)) {
                     audioJobs = info.audioStreams.indices.map { i in
-                        AudioStreamJob(
+                        let strategy = ConversionStrategy.recommend(for: info, audioStreamIndex: i)
+                        return AudioStreamJob(
                             index: i,
                             isEnabled: i == 0,
-                            forceSpatialUpmix: false,
-                            strategy: ConversionStrategy.recommend(for: info, audioStreamIndex: i)
+                            isDefault: i == 0,
+                            useSpatializer: strategy.canForceSpatial,
+                            strategy: strategy
                         )
                     }
                     screen = .ready(info)

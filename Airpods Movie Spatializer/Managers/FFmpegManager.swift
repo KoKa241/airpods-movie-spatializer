@@ -116,6 +116,11 @@ final class FFmpegManager: ObservableObject {
             }
         }
 
+        // Audio disposition flags (mark which track is default)
+        for (outIndex, audioJob) in enabledJobs.enumerated() {
+            args += ["-disposition:a:\(outIndex)", audioJob.isDefault ? "default" : "0"]
+        }
+
         // Copy subtitle streams if present
         if !mediaInfo.subtitleStreams.isEmpty {
             args += ["-c:s", "mov_text"]
