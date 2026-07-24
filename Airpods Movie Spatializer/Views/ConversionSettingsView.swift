@@ -251,6 +251,20 @@ struct CompactAudioTrackRow: View {
                             .padding(.vertical, 1.5)
                             .background(Color.accent1.opacity(0.15), in: Capsule())
                     }
+
+                    // ATMOS badge
+                    if stream.isAtmos {
+                        HStack(spacing: 2) {
+                            Image(systemName: "sparkles")
+                                .font(.system(size: 7, weight: .bold))
+                            Text("ATMOS")
+                                .font(.system(size: 8, weight: .bold, design: .rounded))
+                        }
+                        .foregroundColor(Color.cyan)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 1.5)
+                        .background(Color.cyan.opacity(0.18), in: Capsule())
+                    }
                 }
 
                 // Row 2: codec · channels · bitrate [· title]

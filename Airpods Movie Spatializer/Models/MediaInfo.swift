@@ -7,6 +7,7 @@ struct MediaStream: Identifiable {
     let codecType: StreamType
     let codecName: String
     let codecLongName: String
+    let profile: String?
 
     // Video-specific
     let width: Int?
@@ -23,6 +24,26 @@ struct MediaStream: Identifiable {
     let language: String?
     let title: String?
     let isDefault: Bool
+    let sideDataTypes: [String]
+
+    var isAtmos: Bool {
+        let t = (title ?? "").lowercased()
+        let cName = codecName.lowercased()
+        let cLong = codecLongName.lowercased()
+        let prof = (profile ?? "").lowercased()
+        let layout = (channelLayout ?? "").lowercased()
+        let sideStr = sideDataTypes.joined(separator: " ").lowercased()
+
+        return t.contains("atmos")
+            || cName.contains("atmos")
+            || cLong.contains("atmos")
+            || cLong.contains("joc")
+            || prof.contains("atmos")
+            || prof.contains("joc")
+            || layout.contains("atmos")
+            || sideStr.contains("atmos")
+            || sideStr.contains("joc")
+    }
 
     enum StreamType: String {
         case video
@@ -125,11 +146,20 @@ struct FFprobeOutput: Codable {
     let format: FFprobeFormat
 }
 
+struct FFprobeSideData: Codable {
+    let sideDataType: String?
+
+    enum CodingKeys: String, CodingKey {
+        case sideDataType = "side_data_type"
+    }
+}
+
 struct FFprobeStream: Codable {
     let index: Int
     let codecName: String?
     let codecLongName: String?
     let codecType: String?
+    let profile: String?
     let width: Int?
     let height: Int?
     let rFrameRate: String?
@@ -139,12 +169,14 @@ struct FFprobeStream: Codable {
     let bitRate: String?
     let disposition: FFprobeDisposition?
     let tags: FFprobeTags?
+    let sideDataList: [FFprobeSideData]?
 
     enum CodingKeys: String, CodingKey {
         case index
         case codecName = "codec_name"
         case codecLongName = "codec_long_name"
         case codecType = "codec_type"
+        case profile
         case width, height
         case rFrameRate = "r_frame_rate"
         case sampleRate = "sample_rate"
@@ -152,6 +184,7 @@ struct FFprobeStream: Codable {
         case channelLayout = "channel_layout"
         case bitRate = "bit_rate"
         case disposition, tags
+        case sideDataList = "side_data_list"
     }
 }
 
@@ -229,11 +262,14 @@ extension MediaInfo {
                 fps = nil
             }
 
+            let sideTypes = s.sideDataList?.compactMap { $0.sideDataType } ?? []
+
             return MediaStream(
                 id: s.index,
                 codecType: MediaStream.StreamType(rawValue: s.codecType ?? "unknown") ?? .unknown,
                 codecName: s.codecName ?? "unknown",
                 codecLongName: s.codecLongName ?? "",
+                profile: s.profile,
                 width: s.width,
                 height: s.height,
                 frameRate: fps,
@@ -243,7 +279,8 @@ extension MediaInfo {
                 bitRate: Int(s.bitRate ?? "0"),
                 language: s.tags?.language,
                 title: s.tags?.title,
-                isDefault: s.disposition?.default == 1
+                isDefault: s.disposition?.default == 1,
+                sideDataTypes: sideTypes
             )
         }
     }

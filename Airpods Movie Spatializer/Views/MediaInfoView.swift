@@ -56,8 +56,8 @@ struct MediaInfoView: View {
                     // Audio streams
                     VStack(spacing: 8) {
                         ForEach(mediaInfo.audioStreams) { stream in
-                            StreamCard(title: streamTitle(stream), icon: "waveform", color: .accent1) {
-                                InfoRow(label: "Codec", value: stream.codecName.uppercased())
+                            StreamCard(title: streamTitle(stream), icon: stream.isAtmos ? "sparkles" : "waveform", color: stream.isAtmos ? .cyan : .accent1) {
+                                InfoRow(label: "Codec", value: stream.isAtmos ? "\(stream.codecName.uppercased()) (Dolby Atmos)" : stream.codecName.uppercased())
                                 if let layout = stream.channelLayout, !layout.isEmpty {
                                     InfoRow(label: "Layout", value: layout)
                                 }
@@ -92,7 +92,8 @@ struct MediaInfoView: View {
     private func streamTitle(_ stream: MediaStream) -> String {
         var parts: [String] = []
         if let lang = stream.language { parts.append(lang.uppercased()) }
-        if let title = stream.title { parts.append(title) }
+        if stream.isAtmos { parts.append("Dolby Atmos") }
+        if let title = stream.title, !title.lowercased().contains("atmos") { parts.append(title) }
         if stream.isDefault { parts.append("Default") }
         return parts.isEmpty ? "Audio" : parts.joined(separator: " · ")
     }
