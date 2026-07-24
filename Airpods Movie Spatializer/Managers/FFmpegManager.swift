@@ -76,9 +76,13 @@ final class FFmpegManager: ObservableObject {
         args += ["-c:v", "copy"]
         args += ["-map", "0:v:0"]                 // first video stream
 
-        let enabledJobs = job.audioJobs.filter { $0.isEnabled }
+        // Sort enabled jobs so the primary track (isDefault) comes first.
+        // QuickTime, Apple TV, and iOS video players always play audio stream 0:a:0 by default.
+        let primaryJobs = job.audioJobs.filter { $0.isEnabled && $0.isDefault }
+        let secondaryJobs = job.audioJobs.filter { $0.isEnabled && !$0.isDefault }
+        let sortedEnabledJobs = primaryJobs.isEmpty ? job.audioJobs.filter { $0.isEnabled } : (primaryJobs + secondaryJobs)
 
-        for (outIndex, audioJob) in enabledJobs.enumerated() {
+        for (outIndex, audioJob) in sortedEnabledJobs.enumerated() {
             let streamID = mediaInfo.audioStreams.indices.contains(audioJob.index)
                 ? mediaInfo.audioStreams[audioJob.index].id
                 : 0
@@ -117,7 +121,7 @@ final class FFmpegManager: ObservableObject {
         }
 
         // Audio disposition flags (mark which track is default)
-        for (outIndex, audioJob) in enabledJobs.enumerated() {
+        for (outIndex, audioJob) in sortedEnabledJobs.enumerated() {
             args += ["-disposition:a:\(outIndex)", audioJob.isDefault ? "default" : "0"]
         }
 

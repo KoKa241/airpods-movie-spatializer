@@ -164,8 +164,34 @@ struct FFprobeTags: Codable {
     let title: String?
 
     enum CodingKeys: String, CodingKey {
-        case language = "LANGUAGE"
-        case title = "TITLE"
+        case language
+        case title
+    }
+
+    init(language: String? = nil, title: String? = nil) {
+        self.language = language
+        self.title = title
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let dict = try? container.decode([String: String].self) {
+            var lang: String? = nil
+            var t: String? = nil
+            for (key, value) in dict {
+                let lowerKey = key.lowercased()
+                if lowerKey == "language" || lowerKey == "lang" {
+                    lang = value
+                } else if lowerKey == "title" || lowerKey == "handler_name" {
+                    if t == nil { t = value }
+                }
+            }
+            self.language = lang
+            self.title = t
+        } else {
+            self.language = nil
+            self.title = nil
+        }
     }
 }
 
