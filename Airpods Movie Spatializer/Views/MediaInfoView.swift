@@ -58,17 +58,11 @@ struct MediaInfoView: View {
                         ForEach(mediaInfo.audioStreams) { stream in
                             StreamCard(title: streamTitle(stream), icon: "waveform", color: .accent1) {
                                 InfoRow(label: "Codec", value: stream.codecName.uppercased())
-                                if let ch = stream.channels {
-                                    InfoRow(label: "Channels", value: channelName(ch))
-                                }
                                 if let layout = stream.channelLayout, !layout.isEmpty {
                                     InfoRow(label: "Layout", value: layout)
                                 }
                                 if let sr = stream.sampleRate, sr > 0 {
                                     InfoRow(label: "Sample Rate", value: "\(sr / 1000) kHz")
-                                }
-                                if let br = stream.bitRate, br > 0 {
-                                    InfoRow(label: "Bitrate", value: formattedBitrate(br))
                                 }
                             }
                         }
