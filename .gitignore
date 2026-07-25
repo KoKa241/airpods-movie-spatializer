@@ -30,8 +30,9 @@ Files.dat
 *.moved-aside
 *.pbxuser
 
-# Media test files
+# Media test files & archives
 *.mkv
 *.mp4
 *.mov
+*.zip
 
