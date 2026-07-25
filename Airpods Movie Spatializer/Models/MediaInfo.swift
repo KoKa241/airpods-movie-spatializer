@@ -45,6 +45,14 @@ struct MediaStream: Identifiable {
             || sideStr.contains("joc")
     }
 
+    var isTextSubtitle: Bool {
+        guard codecType == .subtitle else { return false }
+        let cName = codecName.lowercased()
+        let cLong = codecLongName.lowercased()
+        let textCodecs = ["subrip", "srt", "ass", "ssa", "mov_text", "webvtt", "microdvd", "subviewer", "text", "ttml"]
+        return textCodecs.contains(cName) || cName.contains("srt") || cName.contains("text") || cLong.contains("text") || cLong.contains("subrip")
+    }
+
     enum StreamType: String {
         case video
         case audio
@@ -67,6 +75,8 @@ struct MediaInfo {
     var videoStreams: [MediaStream] { streams.filter { $0.codecType == .video } }
     var audioStreams: [MediaStream] { streams.filter { $0.codecType == .audio } }
     var subtitleStreams: [MediaStream] { streams.filter { $0.codecType == .subtitle } }
+    var textSubtitleStreams: [MediaStream] { subtitleStreams.filter { $0.isTextSubtitle } }
+    var imageSubtitleStreams: [MediaStream] { subtitleStreams.filter { !$0.isTextSubtitle } }
 
     var primaryVideo: MediaStream? { videoStreams.first }
     var primaryAudio: MediaStream? { audioStreams.first }

@@ -332,7 +332,7 @@ struct SettingsActionButton: View {
     }
 }
 
-// MARK: - Homebrew Hint View
+// MARK: - Homebrew & Binary Downloads Hint View
 
 struct HomebrewHintView: View {
     var body: some View {
@@ -341,24 +341,51 @@ struct HomebrewHintView: View {
                 RoundedRectangle(cornerRadius: 7)
                     .fill(Color(hue: 0.08, saturation: 0.7, brightness: 0.9).opacity(0.15))
                     .frame(width: 28, height: 28)
-                Image(systemName: "shippingbox.fill")
+                Image(systemName: "arrow.down.circle.fill")
                     .font(.system(size: 13))
                     .foregroundColor(Color(hue: 0.08, saturation: 0.7, brightness: 0.9))
             }
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Install via Homebrew")
+            VStack(alignment: .leading, spacing: 8) {
+                Text("How to get FFmpeg")
                     .font(.caption)
                     .fontWeight(.semibold)
 
-                Text("brew install ffmpeg")
-                    .font(.system(.caption, design: .monospaced))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.black.opacity(0.25), in: RoundedRectangle(cornerRadius: 5))
+                // Option 1: Homebrew
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Install via Homebrew:")
+                        .font(.caption2)
+                        .foregroundColor(.textSecondary)
+                    Text("brew install ffmpeg")
+                        .font(.system(.caption2, design: .monospaced))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.black.opacity(0.25), in: RoundedRectangle(cornerRadius: 5))
+                    Text("Binary location: /opt/homebrew/bin/ffmpeg")
+                        .font(.system(size: 10))
+                        .foregroundColor(.textSecondary.opacity(0.7))
+                }
 
-                Text("After install, the binary is usually at /opt/homebrew/bin/ffmpeg")
-                    .font(.caption2)
-                    .foregroundColor(.textSecondary)
+                Divider().opacity(0.2)
+
+                // Option 2: Direct Binary Download
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Or download standalone macOS binaries:")
+                        .font(.caption2)
+                        .foregroundColor(.textSecondary)
+                    Link(destination: URL(string: "https://ffmpeg.martin-riedl.de")!) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "link")
+                                .font(.system(size: 10))
+                            Text("ffmpeg.martin-riedl.de")
+                                .font(.caption2)
+                                .fontWeight(.medium)
+                            Image(systemName: "arrow.up.forward")
+                                .font(.system(size: 8))
+                        }
+                        .foregroundColor(.accent2)
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
         .padding(12)
@@ -370,6 +397,8 @@ struct HomebrewHintView: View {
         )
     }
 }
+
+
 
 // MARK: - Welcome Setup View
 
@@ -438,8 +467,8 @@ struct WelcomeSetupView: View {
                     .buttonStyle(.bordered)
                 }
 
-                // Common locations hint
-                VStack(alignment: .leading, spacing: 4) {
+                // Common locations hint + link
+                VStack(alignment: .leading, spacing: 6) {
                     Text("Common locations:")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
@@ -452,6 +481,16 @@ struct WelcomeSetupView: View {
                         .foregroundColor(.accent2)
                         .buttonStyle(.plain)
                     }
+
+                    HStack(spacing: 4) {
+                        Text("Or download binaries at")
+                            .font(.caption2)
+                            .foregroundColor(.textSecondary)
+                        Link("ffmpeg.martin-riedl.de", destination: URL(string: "https://ffmpeg.martin-riedl.de")!)
+                            .font(.caption2)
+                            .foregroundColor(.accent2)
+                    }
+                    .padding(.top, 2)
                 }
 
                 Spacer()
