@@ -43,6 +43,9 @@ struct ContentView: View {
             }
         }
         .frame(minWidth: 700, minHeight: 600)
+        .onOpenURL { url in
+            loadFile(url)
+        }
         .alert("Conversion Error", isPresented: $showError) {
             Button("OK", role: .cancel) {}
         } message: {

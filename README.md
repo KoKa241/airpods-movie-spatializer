@@ -1,7 +1,7 @@
 # AirPods Movie Spatializer
 
 <p align="center">
-  <img src="docs/logo.png" alt="AirPods Movie Spatializer Logo" width="220" onerror="this.src='Airpods Movie Spatializer/Assets.xcassets/AppIcon.appiconset/Icon-1024.png'; this.onerror=null;">
+  <img src="docs/logo_spatializer.png" alt="AirPods Movie Spatializer Logo" width="180">
 </p>
 
 <p align="center">
@@ -10,9 +10,15 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
 </p>
 
-A native macOS application designed to prepare video files for Apple Spatial Audio. It remuxes videos to MP4, preserving the video quality entirely while transcoding incompatible audio streams (like DTS or TrueHD) to E-AC3 (Dolby Digital Plus), enabling Spatial Audio virtualization on your AirPods.
+A native macOS application designed to prepare video files for Apple Spatial Audio. It remuxes videos to MP4, preserving video quality entirely while transcoding incompatible audio streams (like DTS or TrueHD) to E-AC3 (Dolby Digital Plus), enabling Spatial Audio virtualization on your AirPods.
 
 Available in 🇬🇧 English, 🇷🇺 Русский, and 🇺🇦 Українська.
+
+---
+
+<p align="center">
+  <img src="docs/window_screenshot.png" alt="AirPods Movie Spatializer Screenshot" width="850">
+</p>
 
 ---
 
@@ -26,8 +32,9 @@ Available in 🇬🇧 English, 🇷🇺 Русский, and 🇺🇦 Украї�
 - **DTS / DTS-HD / TrueHD Support**: Transcodes raw theatrical formats to high-quality E-AC3 (Dolby Digital Plus) compatible with Apple devices.
 - **Dolby Atmos Preservation**: Copies consumer E-AC3 Atmos tracks untouched to retain Dolby Atmos spatial object metadata.
 - **5.1 Upmixing**: Force spatial upmix for stereo tracks (stereo → 5.1 surround using FFmpeg's surround filter) to trigger AirPods Spatial Audio.
-- **Subtitle Passthrough**: Bundles compatible text subtitle tracks as `mov_text`.
-- **FFmpeg path configuration**: Auto-detects local FFmpeg/FFprobe binaries (Homebrew, MacPorts, system paths) and allows manual configuration.
+- **Smart Subtitle Handling**: Bundles compatible text subtitle tracks (`SRT`, `ASS/SSA`, `VTT`) as `mov_text` with ISO language tags and track titles for QuickTime Player compatibility.
+- **Finder Integration**: Appears in Finder's **"Open With..."** context menu for `.mkv`, `.mp4`, `.mov`, and `.avi` files, with `onOpenURL` file launch support.
+- **FFmpeg Path Configuration**: Auto-detects local FFmpeg/FFprobe binaries (Homebrew, MacPorts, system paths) and allows manual configuration.
 - **Instant Language Selector**: Switch interface language between English, Russian, and Ukrainian dynamically within app settings.
 
 ---
@@ -66,7 +73,7 @@ Available in 🇬🇧 English, 🇷🇺 Русский, and 🇺🇦 Украї�
 The project is structured logically around the Model-View-Controller/Manager pattern:
 
 - **Managers**:
-  - `Managers/FFmpegManager.swift` - Core orchestrator for FFmpeg commands, progress piping, and metadata probing.
+  - `Managers/FFmpegManager.swift` - Core orchestrator for FFmpeg commands, progress piping, metadata probing, and subtitle stream mapping.
   - `Managers/AppSettings.swift` - Persists path configurations and user language overrides in `UserDefaults`.
 - **Models**:
   - `Models/MediaInfo.swift` - Structs mapping metadata parsed from `ffprobe` output (video, audio, and subtitle streams).
@@ -78,6 +85,8 @@ The project is structured logically around the Model-View-Controller/Manager pat
   - `Views/ConversionProgressView.swift` - Live progress ring with detailed operation logs.
   - `Views/SettingsView.swift` - Quarantine removal tools, binary validation, and custom language tile selection grid.
   - `Views/DesignSystem.swift` - Premium glassmorphism components, gradients, and buttons.
+- **Configuration**:
+  - `Info.plist` - Declares `CFBundleDocumentTypes` for video file formats (`.mkv`, `.mp4`, `.mov`, `.avi`) for macOS LaunchServices integration.
 
 ## License
 

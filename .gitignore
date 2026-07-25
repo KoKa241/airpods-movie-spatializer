@@ -29,3 +29,9 @@ Files.dat
 *~.nib
 *.moved-aside
 *.pbxuser
+
+# Media test files
+*.mkv
+*.mp4
+*.mov
+
