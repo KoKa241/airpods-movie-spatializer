@@ -70,17 +70,31 @@ struct MediaInfoView: View {
                 }
 
                 // Subtitle streams notice
-                if !mediaInfo.subtitleStreams.isEmpty {
+                if !mediaInfo.textSubtitleStreams.isEmpty {
                     HStack(spacing: 6) {
                         Image(systemName: "captions.bubble.fill")
                             .foregroundColor(.textSecondary)
                             .font(.caption)
-                        Text("\(mediaInfo.subtitleStreams.count) subtitle track(s) found — will be included as mov_text")
+                        Text("\(mediaInfo.textSubtitleStreams.count) subtitle track(s) found — will be included as mov_text")
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
                     .padding(8)
                     .background(Color.white.opacity(0.05))
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                }
+
+                if !mediaInfo.imageSubtitleStreams.isEmpty {
+                    HStack(spacing: 6) {
+                        Image(systemName: "exclamationmark.bubble.fill")
+                            .foregroundColor(.yellow.opacity(0.8))
+                            .font(.caption)
+                        Text("\(mediaInfo.imageSubtitleStreams.count) image subtitle(s) (PGS/VobSub) skipped — MP4 incompatible")
+                            .font(.caption)
+                            .foregroundColor(.yellow.opacity(0.8))
+                    }
+                    .padding(8)
+                    .background(Color.yellow.opacity(0.08))
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
             }

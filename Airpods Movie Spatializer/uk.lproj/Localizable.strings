@@ -61,6 +61,7 @@
 "Layout" = "Розкладка";
 "Sample Rate" = "Частота дискретизації";
 "%lld subtitle track(s) found - will be included as mov_text" = "Знайдено %lld субтитрів - будуть вбудовані як mov_text";
+"%lld image subtitle(s) (PGS/VobSub) skipped — MP4 incompatible" = "Пропущено %lld граф. субтитрів (PGS/DVD) — не підтримуються в MP4";
 "Default" = "За замовчуванням";
 
 /* Settings & Welcome */

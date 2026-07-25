@@ -125,9 +125,21 @@ final class FFmpegManager: ObservableObject {
             args += ["-disposition:a:\(outIndex)", audioJob.isDefault ? "default" : "0"]
         }
 
-        // Copy subtitle streams if present
-        if !mediaInfo.subtitleStreams.isEmpty {
+        // Copy text subtitle streams as mov_text for QuickTime / MP4 compatibility
+        let textSubtitles = mediaInfo.textSubtitleStreams
+        if !textSubtitles.isEmpty {
             args += ["-c:s", "mov_text"]
+            for (outIndex, subStream) in textSubtitles.enumerated() {
+                args += ["-map", "0:\(subStream.id)"]
+
+                if let lang = subStream.language, !lang.isEmpty {
+                    args += ["-metadata:s:s:\(outIndex)", "language=\(lang)"]
+                }
+                if let title = subStream.title, !title.isEmpty {
+                    args += ["-metadata:s:s:\(outIndex)", "title=\(title)"]
+                }
+                args += ["-disposition:s:\(outIndex)", subStream.isDefault ? "default" : "0"]
+            }
         }
 
         // Ensure moov atom is at the beginning for fast start

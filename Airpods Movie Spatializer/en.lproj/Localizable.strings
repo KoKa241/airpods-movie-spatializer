@@ -61,6 +61,7 @@
 "Layout" = "Layout";
 "Sample Rate" = "Sample Rate";
 "%lld subtitle track(s) found - will be included as mov_text" = "%lld subtitle track(s) found - will be included as mov_text";
+"%lld image subtitle(s) (PGS/VobSub) skipped — MP4 incompatible" = "%lld image subtitle(s) (PGS/VobSub) skipped — MP4 incompatible";
 "Default" = "Default";
 
 /* Settings & Welcome */
