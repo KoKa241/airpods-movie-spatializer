@@ -113,10 +113,26 @@ final class AppSettings: ObservableObject {
         process.standardOutput = pipe
         process.standardError  = pipe
 
+        let queue = DispatchQueue(label: "com.ffmpeg.runSync")
+        var outputData = Data()
+
+        pipe.fileHandleForReading.readabilityHandler = { handle in
+            let data = handle.availableData
+            queue.async {
+                outputData.append(data)
+            }
+        }
+
         try process.run()
         process.waitUntilExit()
 
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        return String(data: data, encoding: .utf8) ?? ""
+        pipe.fileHandleForReading.readabilityHandler = nil
+        let remaining = pipe.fileHandleForReading.readDataToEndOfFile()
+        
+        queue.sync {
+            outputData.append(remaining)
+        }
+
+        return String(data: outputData, encoding: .utf8) ?? ""
     }
 }

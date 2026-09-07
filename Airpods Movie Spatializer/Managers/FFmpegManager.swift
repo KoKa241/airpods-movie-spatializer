@@ -214,29 +214,56 @@ final class FFmpegManager: ObservableObject {
 
     private func runProcess(executableURL: URL, arguments: [String]) async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
-            do {
-                let process = Process()
-                process.executableURL = executableURL
-                process.arguments     = arguments
+            let process = Process()
+            process.executableURL = executableURL
+            process.arguments     = arguments
 
-                let outPipe = Pipe()
-                let errPipe = Pipe()
-                process.standardOutput = outPipe
-                process.standardError  = errPipe
+            let outPipe = Pipe()
+            let errPipe = Pipe()
+            process.standardOutput = outPipe
+            process.standardError  = errPipe
 
-                process.terminationHandler = { p in
-                    let outData   = outPipe.fileHandleForReading.readDataToEndOfFile()
-                    let errData   = errPipe.fileHandleForReading.readDataToEndOfFile()
+            let queue = DispatchQueue(label: "com.ffmpeg.runProcess", attributes: .concurrent)
+            var outData = Data()
+            var errData = Data()
+
+            outPipe.fileHandleForReading.readabilityHandler = { handle in
+                let data = handle.availableData
+                queue.async(flags: .barrier) {
+                    outData.append(data)
+                }
+            }
+
+            errPipe.fileHandleForReading.readabilityHandler = { handle in
+                let data = handle.availableData
+                queue.async(flags: .barrier) {
+                    errData.append(data)
+                }
+            }
+
+            process.terminationHandler = { p in
+                outPipe.fileHandleForReading.readabilityHandler = nil
+                errPipe.fileHandleForReading.readabilityHandler = nil
+
+                let remainingOut = outPipe.fileHandleForReading.readDataToEndOfFile()
+                let remainingErr = errPipe.fileHandleForReading.readDataToEndOfFile()
+
+                queue.sync(flags: .barrier) {
+                    outData.append(remainingOut)
+                    errData.append(remainingErr)
+
                     let output    = String(data: outData, encoding: .utf8) ?? ""
                     let errOutput = String(data: errData, encoding: .utf8) ?? ""
 
                     if p.terminationStatus == 0 {
                         continuation.resume(returning: output.isEmpty ? errOutput : output)
                     } else {
-                        continuation.resume(throwing: FFmpegError.probeFailed(errOutput))
+                        continuation.resume(throwing: FFmpegError.probeFailed(errOutput.isEmpty ? output : errOutput))
                     }
                 }
+            }
 
+            do {
                 try process.run()
             } catch {
                 continuation.resume(throwing: error)
