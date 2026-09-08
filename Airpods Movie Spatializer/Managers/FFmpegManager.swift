@@ -125,6 +125,19 @@ final class FFmpegManager: ObservableObject {
             args += ["-disposition:a:\(outIndex)", audioJob.isDefault ? "default" : "0"]
         }
 
+        // Preserve language and title metadata for each audio track
+        for (outIndex, audioJob) in sortedEnabledJobs.enumerated() {
+            guard mediaInfo.audioStreams.indices.contains(audioJob.index) else { continue }
+            let stream = mediaInfo.audioStreams[audioJob.index]
+
+            if let lang = stream.language, !lang.isEmpty {
+                args += ["-metadata:s:a:\(outIndex)", "language=\(lang)"]
+            }
+            if let title = stream.title, !title.isEmpty {
+                args += ["-metadata:s:a:\(outIndex)", "title=\(title)"]
+            }
+        }
+
         // Copy text subtitle streams as mov_text for QuickTime / MP4 compatibility
         let textSubtitles = mediaInfo.textSubtitleStreams
         if !textSubtitles.isEmpty {
