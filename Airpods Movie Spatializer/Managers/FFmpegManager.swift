@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import UserNotifications
 
 // MARK: - FFmpeg Manager
 // Uses ObservableObject (macOS 12 compatible) instead of @Observable (macOS 14+)
@@ -177,6 +178,11 @@ final class FFmpegManager: ObservableObject {
     func convert(job: ConversionJob, mediaInfo: MediaInfo) async throws {
         guard !isConverting else { return }
 
+        // Request notification permission right before the first conversion.
+        // This follows Apple HIG: ask for permissions only when the user
+        // clearly understands why they are needed.
+        requestNotificationPermissionIfNeeded()
+
         isConverting = true
         progress     = 0
         logLines     = []
@@ -204,6 +210,15 @@ final class FFmpegManager: ObservableObject {
         addLog("→ Output: \(job.outputURL.lastPathComponent)")
 
         try await runConversionProcess(executableURL: execURL, arguments: args)
+    }
+
+    // MARK: - Notification Permission
+
+    private func requestNotificationPermissionIfNeeded() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            guard settings.authorizationStatus == .notDetermined else { return }
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+        }
     }
 
     // MARK: - Cancel

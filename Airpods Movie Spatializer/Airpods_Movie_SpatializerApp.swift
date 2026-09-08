@@ -1,15 +1,10 @@
 import SwiftUI
-import UserNotifications
 import AppKit
 
 @main
 struct Airpods_Movie_SpatializerApp: App {
     @StateObject private var settings = AppSettings.shared
 
-    init() {
-        // Request notification permission
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
-    }
 
     var body: some Scene {
         WindowGroup {
