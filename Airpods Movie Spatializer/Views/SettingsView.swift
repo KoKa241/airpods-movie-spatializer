@@ -251,7 +251,12 @@ struct SettingsView: View {
             .padding(24)
         }
         .frame(width: 500)
-        .preferredColorScheme(settings.appTheme.colorScheme)
+        .background(
+            settings.effectiveColorScheme == .dark
+                ? Color(red: 0.11, green: 0.11, blue: 0.13)
+                : Color(red: 0.95, green: 0.95, blue: 0.97)
+        )
+        .preferredColorScheme(settings.effectiveColorScheme)
     }
 
     // MARK: - Actions
@@ -353,7 +358,7 @@ struct BinaryPathRow: View {
                 .font(.system(.caption, design: .monospaced))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 7)
-                .background(Color(NSColor.controlBackgroundColor), in: RoundedRectangle(cornerRadius: 7))
+                .background(Color.primary.opacity(0.06), in: RoundedRectangle(cornerRadius: 7))
                 .overlay(
                     RoundedRectangle(cornerRadius: 7)
                         .strokeBorder(Color.primary.opacity(0.12), lineWidth: 0.5)
@@ -430,7 +435,7 @@ struct HomebrewHintView: View {
                         .font(.system(.caption2, design: .monospaced))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .background(Color(NSColor.controlBackgroundColor), in: RoundedRectangle(cornerRadius: 5))
+                        .background(Color.primary.opacity(0.06), in: RoundedRectangle(cornerRadius: 5))
                     Text("Binary location: /opt/homebrew/bin/ffmpeg")
                         .font(.system(size: 10))
                         .foregroundColor(.textSecondary.opacity(0.7))
@@ -600,7 +605,11 @@ struct WelcomeSetupView: View {
                 )
             }
             .padding(24)
-            .background(Color(NSColor.windowBackgroundColor))
+            .background(
+                settings.effectiveColorScheme == .dark
+                    ? Color(red: 0.14, green: 0.14, blue: 0.16)
+                    : Color(red: 0.97, green: 0.97, blue: 0.98)
+            )
         }
         .onAppear {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.75).delay(0.1)) {

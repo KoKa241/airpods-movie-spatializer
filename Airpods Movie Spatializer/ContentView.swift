@@ -55,7 +55,7 @@ struct ContentView: View {
                 mainContent
             }
         }
-        .preferredColorScheme(settings.appTheme.colorScheme)
+        .preferredColorScheme(settings.effectiveColorScheme)
         .frame(minWidth: 700, minHeight: 600)
         .onOpenURL { url in
             loadFile(url)
@@ -247,7 +247,9 @@ struct ContentView: View {
 
     private var backgroundGradient: some View {
         ZStack {
-            Color(NSColor.windowBackgroundColor)
+            (settings.effectiveColorScheme == .dark
+                ? Color(red: 0.11, green: 0.11, blue: 0.13)
+                : Color(red: 0.95, green: 0.95, blue: 0.97))
             LinearGradient(
                 colors: [Color.accent1.opacity(0.05), Color.accent2.opacity(0.03)],
                 startPoint: .topLeading,

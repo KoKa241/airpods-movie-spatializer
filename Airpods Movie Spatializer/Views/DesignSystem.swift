@@ -7,8 +7,8 @@ extension Color {
     static let accent2 = Color(hue: 0.6, saturation: 0.8, brightness: 1.0)    // blue
     static let surfacePrimary = Color(NSColor.windowBackgroundColor)
     static let surfaceSecondary = Color(NSColor.controlBackgroundColor)
-    static let textPrimary = Color(NSColor.labelColor)
-    static let textSecondary = Color(NSColor.secondaryLabelColor)
+    static let textPrimary = Color.primary
+    static let textSecondary = Color.secondary
 
     // Badge colors
     static let spatialReadyColor = Color(hue: 0.45, saturation: 0.7, brightness: 0.75)

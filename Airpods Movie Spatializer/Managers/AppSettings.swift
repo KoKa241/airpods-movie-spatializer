@@ -69,18 +69,24 @@ final class AppSettings: ObservableObject {
             applyTheme()
         }
     }
+    @Published private(set) var effectiveColorScheme: ColorScheme = .dark
+
+    private var themeObserver: NSObjectProtocol?
 
     private init() {
         ffmpegPath  = defaults.string(forKey: ffmpegPathKey)  ?? ""
         ffprobePath = defaults.string(forKey: ffprobePathKey) ?? ""
         appLanguage = defaults.string(forKey: appLanguageKey) ?? "system"
 
+        let initialTheme: AppTheme
         if let savedTheme = defaults.string(forKey: appThemeKey),
            let theme = AppTheme(rawValue: savedTheme) {
-            appTheme = theme
+            initialTheme = theme
         } else {
-            appTheme = .system
+            initialTheme = .system
         }
+        appTheme = initialTheme
+        effectiveColorScheme = Self.resolveColorScheme(for: initialTheme)
 
         // On first launch, try to auto-detect from common locations
         if ffmpegPath.isEmpty {
@@ -89,20 +95,53 @@ final class AppSettings: ObservableObject {
             autoDetectFFprobe()
         }
 
+        // Observe macOS system dark/light mode changes
+        themeObserver = DistributedNotificationCenter.default().addObserver(
+            forName: Notification.Name("AppleInterfaceThemeChangedNotification"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self, self.appTheme == .system else { return }
+            self.applyTheme()
+        }
+
         applyTheme()
     }
 
+    static func detectSystemColorScheme() -> ColorScheme {
+        let style = UserDefaults.standard.string(forKey: "AppleInterfaceStyle")
+        return (style?.lowercased() == "dark") ? .dark : .light
+    }
+
+    static func resolveColorScheme(for theme: AppTheme) -> ColorScheme {
+        switch theme {
+        case .system:
+            return detectSystemColorScheme()
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
+    }
+
     func applyTheme() {
-        DispatchQueue.main.async { [weak self] in
+        let resolved = Self.resolveColorScheme(for: appTheme)
+        let updateBlock = { [weak self] in
             guard let self = self else { return }
-            switch self.appTheme {
-            case .system:
-                NSApp.appearance = nil
-            case .light:
-                NSApp.appearance = NSAppearance(named: .aqua)
-            case .dark:
-                NSApp.appearance = NSAppearance(named: .darkAqua)
+            self.effectiveColorScheme = resolved
+            let targetAppearance = NSAppearance(named: resolved == .dark ? .darkAqua : .aqua)
+            NSApp?.appearance = targetAppearance
+            for window in NSApp?.windows ?? [] {
+                window.appearance = targetAppearance
+                window.contentView?.appearance = targetAppearance
+                window.viewsNeedDisplay = true
             }
+        }
+
+        if Thread.isMainThread {
+            updateBlock()
+        } else {
+            DispatchQueue.main.async(execute: updateBlock)
         }
     }
 
