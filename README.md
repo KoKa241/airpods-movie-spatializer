@@ -25,19 +25,11 @@ Available in 🇬🇧 English, 🇷🇺 Русский, and 🇺🇦 Украї�
 ## Features
 
 - **Smart Remuxing**: Direct video stream copy (`-c:v copy`). Zero quality loss, fast execution.
-- **Multi-Track Audio Selection**:
-  - Automatically lists all audio streams.
-  - Enable or disable individual tracks.
-  - Custom strategy recommendations per stream.
 - **DTS / DTS-HD / TrueHD Support**: Transcodes raw theatrical formats to high-quality E-AC3 (Dolby Digital Plus) compatible with Apple devices.
 - **Dolby Atmos Preservation**: Copies consumer E-AC3 Atmos tracks untouched to retain Dolby Atmos spatial object metadata.
 - **5.1 Upmixing**: Force spatial upmix for stereo tracks (stereo → 5.1 surround using FFmpeg's surround filter) to trigger AirPods Spatial Audio.
 - **Smart Subtitle Handling**: Bundles compatible text subtitle tracks (`SRT`, `ASS/SSA`, `VTT`) as `mov_text` with ISO language tags and track titles for QuickTime Player compatibility.
 - **Finder Integration**: Appears in Finder's **"Open With..."** context menu for `.mkv`, `.mp4`, `.mov`, and `.avi` files, with `onOpenURL` file launch support.
-- **FFmpeg Path Configuration**: Auto-detects local FFmpeg/FFprobe binaries (Homebrew, MacPorts, system paths) and allows manual configuration (note that `ffprobe` must be placed in the same folder alongside `ffmpeg`).
-- **Theme Switcher**: Choose between System, Light, and Dark appearance dynamically from the toolbar or app settings.
-- **Instant Language Selector**: Switch interface language between English, Russian, and Ukrainian dynamically within app settings.
-
 ---
 
 ## Requirements
