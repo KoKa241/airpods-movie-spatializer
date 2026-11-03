@@ -34,7 +34,8 @@ Available in 🇬🇧 English, 🇷🇺 Русский, and 🇺🇦 Украї�
 - **5.1 Upmixing**: Force spatial upmix for stereo tracks (stereo → 5.1 surround using FFmpeg's surround filter) to trigger AirPods Spatial Audio.
 - **Smart Subtitle Handling**: Bundles compatible text subtitle tracks (`SRT`, `ASS/SSA`, `VTT`) as `mov_text` with ISO language tags and track titles for QuickTime Player compatibility.
 - **Finder Integration**: Appears in Finder's **"Open With..."** context menu for `.mkv`, `.mp4`, `.mov`, and `.avi` files, with `onOpenURL` file launch support.
-- **FFmpeg Path Configuration**: Auto-detects local FFmpeg/FFprobe binaries (Homebrew, MacPorts, system paths) and allows manual configuration.
+- **FFmpeg Path Configuration**: Auto-detects local FFmpeg/FFprobe binaries (Homebrew, MacPorts, system paths) and allows manual configuration (note that `ffprobe` must be placed in the same folder alongside `ffmpeg`).
+- **Theme Switcher**: Choose between System, Light, and Dark appearance dynamically from the toolbar or app settings.
 - **Instant Language Selector**: Switch interface language between English, Russian, and Ukrainian dynamically within app settings.
 
 ---
@@ -42,7 +43,7 @@ Available in 🇬🇧 English, 🇷🇺 Русский, and 🇺🇦 Украї�
 ## Requirements
 
 - **macOS 13.0 (Ventura)** or newer.
-- **FFmpeg & FFprobe** binaries.
+- **FFmpeg & FFprobe** binaries (both must be located in the same directory).
   - You can install them easily via Homebrew:
     ```bash
     brew install ffmpeg
@@ -63,7 +64,7 @@ Available in 🇬🇧 English, 🇷🇺 Русский, and 🇺🇦 Украї�
    ```
 3. **Build & Run (`Cmd + R`)** in Xcode.
 4. **Configure binaries on first launch:**
-   - The app will automatically prompt you to select your FFmpeg/FFprobe binaries or auto-detect them if installed via Homebrew.
+   - The app will automatically prompt you to select your FFmpeg binary (ensure `ffprobe` is placed in the same directory alongside `ffmpeg`) or auto-detect them if installed via Homebrew.
    - If macOS blocks execution with a quarantine message, click the **"Remove Quarantine"** button in Settings.
 
 ---

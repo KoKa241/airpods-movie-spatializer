@@ -72,6 +72,23 @@ struct SettingsView: View {
                             .font(.caption2)
                             .foregroundColor(.textSecondary.opacity(0.65))
                     }
+
+                    HStack(alignment: .top, spacing: 6) {
+                        Image(systemName: "info.circle.fill")
+                            .font(.caption)
+                            .foregroundColor(.accent2)
+                        Text("Note: ffprobe must be located in the same folder as ffmpeg.")
+                            .font(.caption2)
+                            .foregroundColor(.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.accent2.opacity(0.08), in: RoundedRectangle(cornerRadius: 6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .strokeBorder(Color.accent2.opacity(0.2), lineWidth: 0.5)
+                    )
                 }
 
                 // ── FFprobe ──────────────────────────────────────────────
@@ -94,6 +111,59 @@ struct SettingsView: View {
                             }
                         }
                         .disabled(settings.ffprobePath.isEmpty)
+                    }
+
+                    HStack(spacing: 5) {
+                        Image(systemName: "info.circle")
+                            .font(.caption2)
+                            .foregroundColor(.textSecondary.opacity(0.5))
+                        Text("ffprobe should be located next to ffmpeg and is auto-detected.")
+                            .font(.caption2)
+                            .foregroundColor(.textSecondary.opacity(0.65))
+                    }
+
+                    if !settings.ffmpegPath.isEmpty && !settings.isFFprobeConfigured {
+                        HStack(spacing: 6) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundColor(.yellow)
+                                .font(.caption)
+                            Text("ffprobe not found next to ffmpeg! Please place ffprobe in the same folder.")
+                                .font(.caption2)
+                                .foregroundColor(.yellow)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding(8)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.yellow.opacity(0.08), in: RoundedRectangle(cornerRadius: 6))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .strokeBorder(Color.yellow.opacity(0.2), lineWidth: 0.5)
+                        )
+                    }
+                }
+
+                // ── Appearance / Theme ───────────────────────────────────
+                SettingsCard(icon: "circle.righthalf.filled", title: "Appearance", accentColor: .accent1) {
+                    HStack(spacing: 8) {
+                        ThemeTile(
+                            icon: "circle.righthalf.filled",
+                            label: "System Theme",
+                            isSelected: settings.appTheme == .system,
+                            action: { settings.appTheme = .system }
+                        )
+                        ThemeTile(
+                            icon: "sun.max.fill",
+                            label: "Light",
+                            isSelected: settings.appTheme == .light,
+                            action: { settings.appTheme = .light }
+                        )
+                        ThemeTile(
+                            icon: "moon.fill",
+                            label: "Dark",
+                            isSelected: settings.appTheme == .dark,
+                            action: { settings.appTheme = .dark }
+                        )
+                        Spacer()
                     }
                 }
 
@@ -181,6 +251,7 @@ struct SettingsView: View {
             .padding(24)
         }
         .frame(width: 500)
+        .preferredColorScheme(settings.appTheme.colorScheme)
     }
 
     // MARK: - Actions
@@ -263,7 +334,7 @@ struct SettingsCard<Content: View>: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(Color.white.opacity(0.08), lineWidth: 0.5)
+                .strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5)
         )
     }
 }
@@ -282,10 +353,10 @@ struct BinaryPathRow: View {
                 .font(.system(.caption, design: .monospaced))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 7)
-                .background(Color.black.opacity(0.2), in: RoundedRectangle(cornerRadius: 7))
+                .background(Color(NSColor.controlBackgroundColor), in: RoundedRectangle(cornerRadius: 7))
                 .overlay(
                     RoundedRectangle(cornerRadius: 7)
-                        .strokeBorder(Color.white.opacity(0.1), lineWidth: 0.5)
+                        .strokeBorder(Color.primary.opacity(0.12), lineWidth: 0.5)
                 )
 
             Button("Browse", action: onBrowse)
@@ -359,7 +430,7 @@ struct HomebrewHintView: View {
                         .font(.system(.caption2, design: .monospaced))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .background(Color.black.opacity(0.25), in: RoundedRectangle(cornerRadius: 5))
+                        .background(Color(NSColor.controlBackgroundColor), in: RoundedRectangle(cornerRadius: 5))
                     Text("Binary location: /opt/homebrew/bin/ffmpeg")
                         .font(.system(size: 10))
                         .foregroundColor(.textSecondary.opacity(0.7))
@@ -368,7 +439,7 @@ struct HomebrewHintView: View {
                 Divider().opacity(0.2)
 
                 // Option 2: Direct Binary Download
-                VStack(alignment: .leading, spacing: 3) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text("Or download standalone macOS binaries:")
                         .font(.caption2)
                         .foregroundColor(.textSecondary)
@@ -385,6 +456,10 @@ struct HomebrewHintView: View {
                         .foregroundColor(.accent2)
                     }
                     .buttonStyle(.plain)
+
+                    Text("Important: download both ffmpeg and ffprobe and place them in the same directory.")
+                        .font(.system(size: 10))
+                        .foregroundColor(.textSecondary.opacity(0.8))
                 }
             }
         }
@@ -393,7 +468,7 @@ struct HomebrewHintView: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(Color.white.opacity(0.07), lineWidth: 0.5)
+                .strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5)
         )
     }
 }
@@ -467,6 +542,24 @@ struct WelcomeSetupView: View {
                     .buttonStyle(.bordered)
                 }
 
+                // Important note about ffprobe
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: "info.circle.fill")
+                        .foregroundColor(.accent2)
+                        .font(.system(size: 14))
+                    Text("Important: ffprobe must be located in the same folder as ffmpeg.")
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.accent2.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(Color.accent2.opacity(0.25), lineWidth: 0.5)
+                )
+
                 // Common locations hint + link
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Common locations:")
@@ -491,6 +584,10 @@ struct WelcomeSetupView: View {
                             .foregroundColor(.accent2)
                     }
                     .padding(.top, 2)
+
+                    Text("Download both ffmpeg and ffprobe and place them in the same folder.")
+                        .font(.system(size: 10))
+                        .foregroundColor(.textSecondary.opacity(0.75))
                 }
 
                 Spacer()
@@ -503,6 +600,7 @@ struct WelcomeSetupView: View {
                 )
             }
             .padding(24)
+            .background(Color(NSColor.windowBackgroundColor))
         }
         .onAppear {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.75).delay(0.1)) {
@@ -534,12 +632,53 @@ struct LanguageTile: View {
             .frame(width: 65, height: 65)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(isSelected ? Color.accent1.opacity(0.2) : Color.white.opacity(isHovered ? 0.08 : 0.03))
+                    .fill(isSelected ? Color.accent1.opacity(0.2) : Color.primary.opacity(isHovered ? 0.08 : 0.03))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(
-                        isSelected ? Color.accent1 : Color.white.opacity(0.1),
+                        isSelected ? Color.accent1 : Color.primary.opacity(0.1),
+                        lineWidth: isSelected ? 2 : 1
+                    )
+            )
+            .scaleEffect(isHovered && !isSelected ? 1.05 : 1.0)
+            .animation(.spring(response: 0.3), value: isHovered)
+            .animation(.spring(response: 0.3), value: isSelected)
+        }
+        .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
+    }
+}
+
+// MARK: - Theme Tile
+
+struct ThemeTile: View {
+    let icon: String
+    let label: LocalizedStringKey
+    let isSelected: Bool
+    let action: () -> Void
+
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                Image(systemName: icon)
+                    .font(.system(size: 20))
+                    .foregroundColor(isSelected ? .accent1 : .textPrimary)
+                Text(label)
+                    .font(.caption2)
+                    .fontWeight(isSelected ? .semibold : .regular)
+            }
+            .frame(width: 75, height: 65)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(isSelected ? Color.accent1.opacity(0.2) : Color.primary.opacity(isHovered ? 0.08 : 0.03))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(
+                        isSelected ? Color.accent1 : Color.primary.opacity(0.1),
                         lineWidth: isSelected ? 2 : 1
                     )
             )

@@ -10,6 +10,10 @@ struct Airpods_Movie_SpatializerApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.locale, settings.appLanguage == "system" ? .current : Locale(identifier: settings.appLanguage))
+                .preferredColorScheme(settings.appTheme.colorScheme)
+                .onAppear {
+                    settings.applyTheme()
+                }
         }
         .commands {
             CommandGroup(replacing: .newItem) { }
@@ -23,6 +27,7 @@ struct Airpods_Movie_SpatializerApp: App {
         Settings {
             SettingsView()
                 .environment(\.locale, settings.appLanguage == "system" ? .current : Locale(identifier: settings.appLanguage))
+                .preferredColorScheme(settings.appTheme.colorScheme)
         }
     }
 

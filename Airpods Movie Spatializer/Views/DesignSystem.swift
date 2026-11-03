@@ -47,7 +47,7 @@ struct GlassCard<Content: View>: View {
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(Color.white.opacity(0.1), lineWidth: 0.5)
+                    .strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5)
             )
     }
 }
@@ -113,11 +113,11 @@ struct SecondaryButton: View {
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white.opacity(isHovered ? 0.12 : 0.06))
+                    .fill(Color.primary.opacity(isHovered ? 0.12 : 0.06))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(Color.white.opacity(0.15), lineWidth: 0.5)
+                    .strokeBorder(Color.primary.opacity(0.12), lineWidth: 0.5)
             )
             .foregroundColor(.textPrimary.opacity(isDisabled ? 0.4 : 1.0))
         }

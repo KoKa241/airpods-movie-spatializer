@@ -80,7 +80,7 @@ struct MediaInfoView: View {
                             .foregroundColor(.textSecondary)
                     }
                     .padding(8)
-                    .background(Color.white.opacity(0.05))
+                    .background(Color.primary.opacity(0.05))
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
 
@@ -179,11 +179,11 @@ struct StreamCard<Content: View>: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white.opacity(0.05))
+        .background(Color.primary.opacity(0.04))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(color.opacity(0.15), lineWidth: 0.5)
+                .strokeBorder(color.opacity(0.2), lineWidth: 0.5)
         )
     }
 }

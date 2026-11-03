@@ -189,7 +189,7 @@ struct CompactAudioTrackRow: View {
                         .strokeBorder(
                             audioJob.isDefault
                                 ? Color.accent1
-                                : Color.white.opacity(0.25),
+                                : Color.primary.opacity(0.25),
                             lineWidth: 1.5
                         )
                         .frame(width: 18, height: 18)
@@ -208,8 +208,8 @@ struct CompactAudioTrackRow: View {
             ZStack {
                 Circle()
                     .fill(isDeleted
-                          ? Color.white.opacity(0.04)
-                          : (audioJob.isDefault ? Color.accent1.opacity(0.2) : Color.white.opacity(0.07)))
+                          ? Color.primary.opacity(0.04)
+                          : (audioJob.isDefault ? Color.accent1.opacity(0.2) : Color.primary.opacity(0.07)))
                     .frame(width: 28, height: 28)
                 Text(languageEmoji)
                     .font(.system(size: 14))
@@ -237,8 +237,8 @@ struct CompactAudioTrackRow: View {
                     .padding(.vertical, 2)
                     .background(
                         isDeleted
-                            ? Color.white.opacity(0.03)
-                            : Color.white.opacity(0.08),
+                            ? Color.primary.opacity(0.03)
+                            : Color.primary.opacity(0.08),
                         in: Capsule()
                     )
 
@@ -284,12 +284,8 @@ struct CompactAudioTrackRow: View {
                     }
                 }
             }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                onMakePrimary()
-            }
 
-            Spacer()
+            Spacer(minLength: 8)
 
             // ── Right: Controls ───────────────────────────────────────
             HStack(spacing: 6) {
@@ -314,17 +310,18 @@ struct CompactAudioTrackRow: View {
                             .background(
                                 audioJob.useSpatializer
                                     ? Color.accent1.opacity(0.14)
-                                    : Color.white.opacity(0.05),
+                                    : Color.primary.opacity(0.05),
                                 in: Capsule()
                             )
                             .overlay(
                                 Capsule().strokeBorder(
                                     audioJob.useSpatializer
                                         ? Color.accent1.opacity(0.4)
-                                        : Color.white.opacity(0.08),
+                                        : Color.primary.opacity(0.08),
                                     lineWidth: 0.5
                                 )
                             )
+                            .contentShape(Capsule())
                         }
                         .buttonStyle(.plain)
                         .animation(.spring(response: 0.25), value: audioJob.useSpatializer)
@@ -348,7 +345,7 @@ struct CompactAudioTrackRow: View {
 
                     // Separator
                     Rectangle()
-                        .fill(Color.white.opacity(0.12))
+                        .fill(Color.primary.opacity(0.12))
                         .frame(width: 1, height: 14)
                 }
 
@@ -389,23 +386,27 @@ struct CompactAudioTrackRow: View {
             RoundedRectangle(cornerRadius: 9)
                 .fill(
                     isDeleted
-                        ? Color.white.opacity(0.02)
+                        ? Color.primary.opacity(0.02)
                         : (audioJob.isDefault
                            ? Color.accent1.opacity(0.06)
-                           : Color.white.opacity(0.04))
+                           : Color.primary.opacity(0.04))
                 )
         )
         .overlay(
             RoundedRectangle(cornerRadius: 9)
                 .strokeBorder(
                     isDeleted
-                        ? Color.white.opacity(0.04)
+                        ? Color.primary.opacity(0.04)
                         : (audioJob.isDefault
                            ? Color.accent1.opacity(0.25)
-                           : Color.white.opacity(0.07)),
+                           : Color.primary.opacity(0.07)),
                     lineWidth: 0.5
                 )
         )
+        .contentShape(RoundedRectangle(cornerRadius: 9))
+        .onTapGesture {
+            onMakePrimary()
+        }
         .animation(.spring(response: 0.3), value: audioJob.isEnabled)
         .animation(.spring(response: 0.3), value: audioJob.isDefault)
         .opacity(isDeleted ? 0.5 : 1.0)
@@ -572,6 +573,7 @@ struct TrackActionButton: View {
                     lineWidth: 0.5
                 )
             )
+            .contentShape(Capsule())
         }
         .buttonStyle(.plain)
         .onHover { isHovered = $0 }

@@ -29,7 +29,7 @@ struct ConversionProgressView: View {
                 ZStack {
                     // Background ring
                     Circle()
-                        .stroke(Color.white.opacity(0.1), lineWidth: 8)
+                        .stroke(Color.primary.opacity(0.1), lineWidth: 8)
                         .frame(width: 120, height: 120)
 
                     // Progress ring
@@ -145,7 +145,7 @@ struct ConversionProgressView: View {
                         }
                         .padding(10)
                     }
-                    .background(Color.black.opacity(0.3))
+                    .background(Color.black.opacity(0.75))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .frame(height: 150)
                     .onChange(of: ffmpeg.logLines.count) { _ in
@@ -166,7 +166,7 @@ struct ConversionProgressView: View {
         if line.hasPrefix("✓") { return .green.opacity(0.9) }
         if line.hasPrefix("✗") || line.hasPrefix("⚠") { return .yellow.opacity(0.9) }
         if line.hasPrefix("→") { return .accent2.opacity(0.9) }
-        return .white.opacity(0.6)
+        return .white.opacity(0.85)
     }
 }
 

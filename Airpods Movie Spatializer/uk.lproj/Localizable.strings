@@ -100,3 +100,22 @@
 "Stereo" = "Стерео";
 "Needs Transcoding" = "Потрібне конвертування";
 "No Audio" = "Немає аудіо";
+
+/* Theme */
+"Appearance" = "Тема оформлення";
+"System Theme" = "Системна";
+"Light" = "Світла";
+"Dark" = "Темна";
+
+/* FFprobe Disclaimers & Notes */
+"Note: ffprobe must be located in the same folder as ffmpeg." = "Примітка: ffprobe має знаходитися в тій самій папці поруч із ffmpeg.";
+"Important: ffprobe must be located in the same folder as ffmpeg." = "Важливо: ffprobe має знаходитися в тій самій папці поруч із ffmpeg.";
+"ffprobe should be located next to ffmpeg and is auto-detected." = "ffprobe має лежати поруч із ffmpeg і визначається автоматично.";
+"ffprobe not found next to ffmpeg! Please place ffprobe in the same folder." = "ffprobe не знайдено поруч із ffmpeg! Будь ласка, помістіть ffprobe у ту саму папку.";
+"Download both ffmpeg and ffprobe and place them in the same folder." = "Завантажте і ffmpeg, і ffprobe та помістіть їх в одну папку.";
+"Important: download both ffmpeg and ffprobe and place them in the same directory." = "Важливо: завантажте і ffmpeg, і ffprobe та помістіть їх в одну папку.";
+"ffprobe was not found. Please make sure ffprobe is located next to ffmpeg in the same folder." = "ffprobe не знайдено. Переконайтеся, що ffprobe знаходиться поруч із ffmpeg у тій самій папці.";
+"Failed to analyze file: %@" = "Не вдалося проаналізувати файл: %@";
+"Conversion failed: %@" = "Помилка конвертації: %@";
+"Conversion was cancelled." = "Конвертацію скасовано.";
+"FFmpeg is not configured. Please set the path to the FFmpeg binary in Settings." = "FFmpeg не налаштовано. Будь ласка, вкажіть шлях до виконуваного файлу FFmpeg у Налаштуваннях.";

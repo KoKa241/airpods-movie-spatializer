@@ -1,5 +1,33 @@
 import Foundation
 import Combine
+import SwiftUI
+import AppKit
+
+// MARK: - App Theme
+
+enum AppTheme: String, CaseIterable, Identifiable {
+    case system = "system"
+    case light = "light"
+    case dark = "dark"
+
+    var id: String { rawValue }
+
+    var icon: String {
+        switch self {
+        case .system: return "circle.righthalf.filled"
+        case .light:  return "sun.max.fill"
+        case .dark:   return "moon.fill"
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: return nil
+        case .light:  return .light
+        case .dark:   return .dark
+        }
+    }
+}
 
 // MARK: - App Settings
 // Uses ObservableObject (macOS 12 compatible) instead of @Observable (macOS 14+)
@@ -13,6 +41,7 @@ final class AppSettings: ObservableObject {
     private let ffmpegPathKey  = "ffmpegPath"
     private let ffprobePathKey = "ffprobePath"
     private let appLanguageKey = "appLanguage"
+    private let appThemeKey    = "appTheme"
 
     // Common locations where ffmpeg is usually installed
     static let commonFFmpegPaths = [
@@ -23,7 +52,10 @@ final class AppSettings: ObservableObject {
     ]
 
     @Published var ffmpegPath: String {
-        didSet { defaults.set(ffmpegPath, forKey: ffmpegPathKey) }
+        didSet {
+            defaults.set(ffmpegPath, forKey: ffmpegPathKey)
+            autoDetectFFprobe()
+        }
     }
     @Published var ffprobePath: String {
         didSet { defaults.set(ffprobePath, forKey: ffprobePathKey) }
@@ -31,15 +63,46 @@ final class AppSettings: ObservableObject {
     @Published var appLanguage: String {
         didSet { defaults.set(appLanguage, forKey: appLanguageKey) }
     }
+    @Published var appTheme: AppTheme {
+        didSet {
+            defaults.set(appTheme.rawValue, forKey: appThemeKey)
+            applyTheme()
+        }
+    }
 
     private init() {
         ffmpegPath  = defaults.string(forKey: ffmpegPathKey)  ?? ""
         ffprobePath = defaults.string(forKey: ffprobePathKey) ?? ""
         appLanguage = defaults.string(forKey: appLanguageKey) ?? "system"
 
+        if let savedTheme = defaults.string(forKey: appThemeKey),
+           let theme = AppTheme(rawValue: savedTheme) {
+            appTheme = theme
+        } else {
+            appTheme = .system
+        }
+
         // On first launch, try to auto-detect from common locations
         if ffmpegPath.isEmpty {
             autoDetectFFmpeg()
+        } else if ffprobePath.isEmpty {
+            autoDetectFFprobe()
+        }
+
+        applyTheme()
+    }
+
+    func applyTheme() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            switch self.appTheme {
+            case .system:
+                NSApp.appearance = nil
+            case .light:
+                NSApp.appearance = NSAppearance(named: .aqua)
+            case .dark:
+                NSApp.appearance = NSAppearance(named: .darkAqua)
+            }
         }
     }
 
@@ -47,6 +110,17 @@ final class AppSettings: ObservableObject {
 
     var isConfigured: Bool {
         !ffmpegPath.isEmpty && isExecutable(at: ffmpegPath)
+    }
+
+    var isFFprobeConfigured: Bool {
+        !ffprobePath.isEmpty && isExecutable(at: ffprobePath)
+    }
+
+    var isFFprobeNextToFFmpeg: Bool {
+        guard !ffmpegPath.isEmpty else { return false }
+        let dir = (ffmpegPath as NSString).deletingLastPathComponent
+        let probePath = (dir as NSString).appendingPathComponent("ffprobe")
+        return isExecutable(at: probePath)
     }
 
     /// Check file exists AND is executable (not just present)

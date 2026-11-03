@@ -2,9 +2,11 @@
 #
 # Reference: https://github.com/github/gitignore/blob/main/Swift.gitignore
 
-# Build artifacts
+# Build artifacts & local scripts
 build/
+dist/
 DerivedData/
+build_release.sh
 
 # Xcode personal settings / user state
 *.xcuserstate
@@ -35,4 +37,5 @@ Files.dat
 *.mp4
 *.mov
 *.zip
+*.dmg
 

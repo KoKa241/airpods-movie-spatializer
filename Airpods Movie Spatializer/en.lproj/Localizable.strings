@@ -100,3 +100,22 @@
 "Stereo" = "Stereo";
 "Needs Transcoding" = "Needs Transcoding";
 "No Audio" = "No Audio";
+
+/* Theme */
+"Appearance" = "Appearance";
+"System Theme" = "System";
+"Light" = "Light";
+"Dark" = "Dark";
+
+/* FFprobe Disclaimers & Notes */
+"Note: ffprobe must be located in the same folder as ffmpeg." = "Note: ffprobe must be located in the same folder as ffmpeg.";
+"Important: ffprobe must be located in the same folder as ffmpeg." = "Important: ffprobe must be located in the same folder as ffmpeg.";
+"ffprobe should be located next to ffmpeg and is auto-detected." = "ffprobe should be located next to ffmpeg and is auto-detected.";
+"ffprobe not found next to ffmpeg! Please place ffprobe in the same folder." = "ffprobe not found next to ffmpeg! Please place ffprobe in the same folder.";
+"Download both ffmpeg and ffprobe and place them in the same folder." = "Download both ffmpeg and ffprobe and place them in the same folder.";
+"Important: download both ffmpeg and ffprobe and place them in the same directory." = "Important: download both ffmpeg and ffprobe and place them in the same directory.";
+"ffprobe was not found. Please make sure ffprobe is located next to ffmpeg in the same folder." = "ffprobe was not found. Please make sure ffprobe is located next to ffmpeg in the same folder.";
+"Failed to analyze file: %@" = "Failed to analyze file: %@";
+"Conversion failed: %@" = "Conversion failed: %@";
+"Conversion was cancelled." = "Conversion was cancelled.";
+"FFmpeg is not configured. Please set the path to the FFmpeg binary in Settings." = "FFmpeg is not configured. Please set the path to the FFmpeg binary in Settings.";

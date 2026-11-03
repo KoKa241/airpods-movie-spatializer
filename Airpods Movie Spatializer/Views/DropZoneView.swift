@@ -24,7 +24,7 @@ struct DropZoneView: View {
                         .strokeBorder(
                             isDragging
                                 ? LinearGradient.accentGradient
-                                : LinearGradient(colors: [Color.white.opacity(0.15)],
+                                : LinearGradient(colors: [Color.primary.opacity(0.12)],
                                                  startPoint: .top, endPoint: .bottom),
                             lineWidth: isDragging ? 2 : 1
                         )
@@ -80,7 +80,7 @@ struct DropZoneView: View {
                         .padding(.horizontal, 18)
                         .padding(.vertical, 8)
                         .background(.ultraThinMaterial, in: Capsule())
-                        .overlay(Capsule().strokeBorder(Color.white.opacity(0.15), lineWidth: 0.5))
+                        .overlay(Capsule().strokeBorder(Color.primary.opacity(0.12), lineWidth: 0.5))
                         .foregroundColor(.textPrimary)
                     }
                     .buttonStyle(.plain)

@@ -36,12 +36,26 @@ struct ContentView: View {
                 WelcomeSetupView()
                     .frame(maxWidth: 520)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .shadow(color: .black.opacity(0.3), radius: 30, y: 10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                    )
+                    .shadow(color: Color.black.opacity(0.25), radius: 30, y: 10)
                     .padding(40)
+
+                VStack {
+                    HStack {
+                        Spacer()
+                        ThemeSwitcher()
+                            .padding(20)
+                    }
+                    Spacer()
+                }
             } else {
                 mainContent
             }
         }
+        .preferredColorScheme(settings.appTheme.colorScheme)
         .frame(minWidth: 700, minHeight: 600)
         .onOpenURL { url in
             loadFile(url)
@@ -142,6 +156,12 @@ struct ContentView: View {
                 .buttonStyle(.plain)
                 .help("Clear file and start over")
             }
+
+            // 3-position theme switcher
+            ThemeSwitcher()
+
+            // Settings button
+            SettingsButton()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
@@ -364,6 +384,117 @@ struct FeatureChip: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
         .background(.ultraThinMaterial, in: Capsule())
-        .overlay(Capsule().strokeBorder(Color.white.opacity(0.08), lineWidth: 0.5))
+        .overlay(Capsule().strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5))
+    }
+}
+
+// MARK: - 3-Position Theme Switcher
+
+struct ThemeSwitcher: View {
+    @ObservedObject private var settings = AppSettings.shared
+    @Namespace private var animation
+
+    private let items: [(AppTheme, String, LocalizedStringKey)] = [
+        (.system, "circle.righthalf.filled", "System Theme"),
+        (.light,  "sun.max.fill",            "Light"),
+        (.dark,   "moon.fill",               "Dark")
+    ]
+
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(items, id: \.0.id) { theme, icon, title in
+                let isSelected = settings.appTheme == theme
+                Button {
+                    withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
+                        settings.appTheme = theme
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: icon)
+                            .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
+                        Text(title)
+                            .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
+                    }
+                    .foregroundColor(isSelected ? .white : .textSecondary)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .background {
+                        if isSelected {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(LinearGradient.accentGradient)
+                                .matchedGeometryEffect(id: "themeActivePill", in: animation)
+                                .shadow(color: Color.accent1.opacity(0.3), radius: 4, y: 1)
+                        }
+                    }
+                    .contentShape(RoundedRectangle(cornerRadius: 6))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(3)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 0.5)
+        )
+    }
+}
+
+// MARK: - Settings Button
+
+struct SettingsButton: View {
+    @State private var isHovered = false
+
+    var body: some View {
+        if #available(macOS 14.0, *) {
+            ModernSettingsButton()
+        } else {
+            Button {
+                if !NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil) {
+                    NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+                }
+                NSApp.activate(ignoringOtherApps: true)
+            } label: {
+                SettingsGearLabel(isHovered: isHovered)
+            }
+            .buttonStyle(.plain)
+            .onHover { isHovered = $0 }
+            .help("Settings (⌘,)")
+        }
+    }
+}
+
+@available(macOS 14.0, *)
+private struct ModernSettingsButton: View {
+    @Environment(\.openSettings) private var openSettings
+    @State private var isHovered = false
+
+    var body: some View {
+        Button {
+            openSettings()
+            NSApp.activate(ignoringOtherApps: true)
+        } label: {
+            SettingsGearLabel(isHovered: isHovered)
+        }
+        .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
+        .help("Settings (⌘,)")
+    }
+}
+
+private struct SettingsGearLabel: View {
+    let isHovered: Bool
+
+    var body: some View {
+        Image(systemName: "gearshape.fill")
+            .font(.system(size: 13, weight: .medium))
+            .foregroundColor(isHovered ? .textPrimary : .textSecondary)
+            .frame(width: 28, height: 28)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 7))
+            .overlay(
+                RoundedRectangle(cornerRadius: 7)
+                    .strokeBorder(Color.primary.opacity(isHovered ? 0.2 : 0.1), lineWidth: 0.5)
+            )
+            .contentShape(RoundedRectangle(cornerRadius: 7))
     }
 }

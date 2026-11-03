@@ -30,20 +30,24 @@ final class FFmpegManager: ObservableObject {
         defer { isProbing = false }
 
         let settings = AppSettings.shared
-        let probePath = settings.ffprobePath.isEmpty ? settings.ffmpegPath : settings.ffprobePath
-
-        guard !probePath.isEmpty else {
+        guard !settings.ffmpegPath.isEmpty else {
             throw FFmpegError.ffmpegNotConfigured
         }
 
-        let probeExec = probePath.hasSuffix("ffprobe") ? probePath :
-            (probePath as NSString).deletingLastPathComponent + "/ffprobe"
-
+        // Determine ffprobe path: custom configured path or alongside ffmpeg
+        let fm = FileManager.default
         let execURL: URL
-        if FileManager.default.fileExists(atPath: probeExec) {
-            execURL = URL(fileURLWithPath: probeExec)
+
+        if !settings.ffprobePath.isEmpty && fm.isExecutableFile(atPath: settings.ffprobePath) {
+            execURL = URL(fileURLWithPath: settings.ffprobePath)
         } else {
-            execURL = URL(fileURLWithPath: probePath)
+            let dir = (settings.ffmpegPath as NSString).deletingLastPathComponent
+            let probePath = (dir as NSString).appendingPathComponent("ffprobe")
+            if fm.isExecutableFile(atPath: probePath) {
+                execURL = URL(fileURLWithPath: probePath)
+            } else {
+                throw FFmpegError.ffprobeNotFound
+            }
         }
 
         let args = [
@@ -396,6 +400,7 @@ final class FFmpegManager: ObservableObject {
 
 enum FFmpegError: LocalizedError {
     case ffmpegNotConfigured
+    case ffprobeNotFound
     case probeFailed(String)
     case conversionFailed(String)
     case cancelled
@@ -403,13 +408,15 @@ enum FFmpegError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .ffmpegNotConfigured:
-            return "FFmpeg is not configured. Please set the path to the FFmpeg binary in Settings."
+            return NSLocalizedString("FFmpeg is not configured. Please set the path to the FFmpeg binary in Settings.", comment: "")
+        case .ffprobeNotFound:
+            return NSLocalizedString("ffprobe was not found. Please make sure ffprobe is located next to ffmpeg in the same folder.", comment: "")
         case .probeFailed(let msg):
-            return "Failed to analyze file: \(msg)"
+            return String(format: NSLocalizedString("Failed to analyze file: %@", comment: ""), msg)
         case .conversionFailed(let msg):
-            return "Conversion failed: \(msg)"
+            return String(format: NSLocalizedString("Conversion failed: %@", comment: ""), msg)
         case .cancelled:
-            return "Conversion was cancelled."
+            return NSLocalizedString("Conversion was cancelled.", comment: "")
         }
     }
 }
